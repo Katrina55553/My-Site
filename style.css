@@ -1,0 +1,1284 @@
+/* -------------------------------------------------------------
+ * 1. DESIGN SYSTEM & CUSTOM PROPERTIES
+ * ------------------------------------------------------------- */
+:root {
+    /* 霓虹色相与亮度，可通过 JS 动态修改 */
+    --primary-hue: 280; /* 默认紫色 */
+    --primary-glow: 100%;
+    
+    /* 动态计算的主霓虹色与辅助霓虹色 */
+    --neon-primary: hsl(var(--primary-hue), 85%, 65%);
+    --neon-secondary: hsl(calc(var(--primary-hue) + 40), 90%, 60%);
+    --neon-primary-glow: hsla(var(--primary-hue), 85%, 65%, calc(var(--primary-glow) * 0.003));
+    --neon-secondary-glow: hsla(calc(var(--primary-hue) + 40), 90%, 60%, calc(var(--primary-glow) * 0.003));
+    
+    /* 基础背景与面板色 */
+    --bg-dark: #070913;
+    --bg-surface: rgba(15, 20, 35, 0.45);
+    --bg-surface-hover: rgba(20, 27, 48, 0.6);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.18);
+    
+    /* 文字颜色 */
+    --text-main: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    /* 字体 */
+    --font-heading: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    
+    /* 过渡效果 */
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* -------------------------------------------------------------
+ * 2. RESET & BASE
+ * ------------------------------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-primary);
+}
+
+/* -------------------------------------------------------------
+ * 3. BACKGROUND GLOW ORBS (动态炫光)
+ * ------------------------------------------------------------- */
+.bg-glow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.18;
+    mix-blend-mode: screen;
+    will-change: transform;
+}
+
+.orb-1 {
+    width: 45vw;
+    height: 45vw;
+    background: radial-gradient(circle, var(--neon-primary) 0%, transparent 70%);
+    top: -10vw;
+    left: -10vw;
+    animation: float-glow-1 25s infinite alternate ease-in-out;
+}
+
+.orb-2 {
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, var(--neon-secondary) 0%, transparent 70%);
+    bottom: -15vw;
+    right: -10vw;
+    animation: float-glow-2 30s infinite alternate ease-in-out;
+}
+
+.orb-3 {
+    width: 35vw;
+    height: 35vw;
+    background: radial-gradient(circle, var(--neon-primary) 0%, transparent 75%);
+    top: 30vh;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: float-glow-3 28s infinite alternate ease-in-out;
+}
+
+@keyframes float-glow-1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(10vw, 8vh) scale(1.15); }
+}
+
+@keyframes float-glow-2 {
+    0% { transform: translate(0, 0) scale(1.1); }
+    100% { transform: translate(-12vw, -10vh) scale(0.9); }
+}
+
+@keyframes float-glow-3 {
+    0% { transform: translate(-50%, 0) scale(0.9); }
+    100% { transform: translate(calc(-50% + 5vw), 15vh) scale(1.2); }
+}
+
+/* -------------------------------------------------------------
+ * 4. GLASSMORPHISM UTILITIES
+ * ------------------------------------------------------------- */
+.glass-card {
+    background: var(--bg-surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    transition: var(--transition-smooth);
+}
+
+.glass-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-surface-hover);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* -------------------------------------------------------------
+ * 5. NAVBAR
+ * ------------------------------------------------------------- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.25rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: rgba(7, 9, 19, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    transition: var(--transition-smooth);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 1.5px;
+}
+
+.logo-bracket {
+    color: var(--neon-primary);
+    text-shadow: 0 0 10px var(--neon-primary-glow);
+}
+
+.logo-text {
+    background: linear-gradient(135deg, var(--text-main) 60%, var(--neon-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0.25rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: var(--transition-smooth);
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--text-main);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary));
+    transition: var(--transition-smooth);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+    width: 100%;
+}
+
+.nav-actions .github-btn {
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.03);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.nav-actions .github-btn:hover {
+    color: var(--text-main);
+    border-color: var(--neon-primary);
+    box-shadow: 0 0 15px var(--neon-primary-glow);
+    transform: translateY(-2px);
+}
+
+/* -------------------------------------------------------------
+ * 6. CONTAINER & LAYOUTS
+ * ------------------------------------------------------------- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.section {
+    padding: 7rem 0 3rem 0;
+}
+
+.section-header {
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 4px;
+    background: var(--neon-primary);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--neon-primary);
+}
+
+.section-desc {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0.5rem auto 0 auto;
+}
+
+/* -------------------------------------------------------------
+ * 7. HERO SECTION (主页英雄区)
+ * ------------------------------------------------------------- */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8rem;
+    gap: 4rem;
+}
+
+.hero-content {
+    flex: 1.2;
+    max-width: 650px;
+}
+
+.badge-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    position: relative;
+}
+
+.pulse-dot::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #10b981;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(3); opacity: 0; }
+}
+
+.badge-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 3.8rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1.5px;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px var(--neon-primary-glow);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+/* 按钮基础样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-bounce);
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 20px var(--neon-primary-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px var(--neon-primary-glow);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(8px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--neon-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px var(--neon-primary-glow);
+}
+
+.hero-visual {
+    flex: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+}
+
+/* WebGL 3D 粒子星系容器 */
+#webgl-container {
+    width: 100%;
+    height: 450px;
+    position: relative;
+    cursor: none; /* 禁用系统光标，依赖自定义光标 */
+    z-index: 10;
+}
+
+/* -------------------------------------------------------------
+ * 8. HUB SECTION (中转卡片)
+ * ------------------------------------------------------------- */
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+}
+
+.hub-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+}
+
+.card-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--neon-primary-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    top: -150px;
+    left: -150px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.hub-card:hover {
+    border-color: var(--neon-primary);
+    box-shadow: 0 12px 40px var(--neon-primary-glow);
+}
+
+.hub-card:hover .card-glow {
+    opacity: 1;
+}
+
+.card-content {
+    padding: 3rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    position: relative;
+    transform: translateZ(30px); /* 让卡片内部元素浮空，实现3D视差 */
+}
+
+.card-header-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neon-primary);
+    margin-bottom: 2rem;
+    transition: var(--transition-smooth);
+}
+
+.hub-card:hover .card-header-icon {
+    color: #fff;
+    background: var(--neon-primary);
+    border-color: var(--neon-primary);
+    box-shadow: 0 0 20px var(--neon-primary-glow);
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.card-desc {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+/* 博客内嵌预览列表 */
+.blog-preview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+}
+
+.preview-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.preview-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(4px);
+}
+
+.preview-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--neon-secondary);
+    display: block;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.preview-title {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+/* 项目标签排版 */
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 4rem;
+}
+
+.project-tags .tag {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    transition: var(--transition-smooth);
+}
+
+.project-tags .tag:hover {
+    border-color: var(--neon-secondary);
+    color: var(--text-main);
+    box-shadow: 0 0 10px var(--neon-secondary-glow);
+}
+
+/* 卡片操作按钮 */
+.card-action-btn {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-main);
+    font-weight: 600;
+    text-decoration: none;
+    align-self: flex-start;
+    padding: 0.5rem 0;
+    transition: var(--transition-smooth);
+    position: relative;
+}
+
+.card-action-btn i {
+    transition: transform 0.3s ease;
+}
+
+.card-action-btn:hover {
+    color: var(--neon-primary);
+}
+
+.card-action-btn:hover i {
+    transform: translate(3px, -3px);
+}
+
+/* -------------------------------------------------------------
+ * 9. UI LABORATORY SECTION (UI实验室)
+ * ------------------------------------------------------------- */
+.lab-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+}
+
+.lab-widget {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.widget-tag {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--neon-primary);
+}
+
+.widget-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-dot.green { background-color: #10b981; box-shadow: 0 0 8px #10b981; }
+.status-dot.purple { background-color: #a855f7; box-shadow: 0 0 8px #a855f7; }
+
+/* 9.1 音乐播放器组件 */
+.music-player-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.vinyl-container {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin-bottom: 1.5rem;
+}
+
+.vinyl-disc {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #334155 0%, #0f172a 70%, #020617 100%);
+    border-radius: 50%;
+    border: 3px solid #1e293b;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vinyl-disc.playing {
+    animation: rotate-vinyl 6s linear infinite;
+}
+
+.vinyl-center {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+    border-radius: 50%;
+    border: 4px solid var(--bg-dark);
+}
+
+@keyframes rotate-vinyl {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.track-info .track-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.track-info .track-artist {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* 音频频谱动画 */
+.audio-visualizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 40px;
+    margin-bottom: 2rem;
+}
+
+.audio-visualizer .bar {
+    width: 3px;
+    height: 4px;
+    background-color: var(--neon-primary);
+    border-radius: 10px;
+    transition: height 0.15s ease, background-color 0.4s ease;
+}
+
+/* 进度条样式 */
+.progress-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.time-elapsed, .time-total {
+    font-size: 0.8rem;
+    font-family: var(--font-heading);
+    color: var(--text-muted);
+}
+
+.progress-bar-wrap {
+    flex: 1;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary));
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--neon-primary-glow);
+    transition: width 0.1s linear;
+}
+
+/* 播放控制按钮 */
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.ctrl-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.ctrl-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.ctrl-btn.play-btn {
+    background: var(--neon-primary);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--neon-primary-glow);
+}
+
+.ctrl-btn.play-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px var(--neon-primary-glow);
+    background: var(--neon-secondary);
+}
+
+/* 9.2 环境控制器组件 */
+.controller-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.ctrl-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.ctrl-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+}
+
+.control-group {
+    margin-bottom: 2rem;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.control-group label span {
+    font-family: var(--font-heading);
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+/* 自定义滑块 */
+.neon-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    outline: none;
+}
+
+.neon-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--neon-primary);
+    box-shadow: 0 0 10px var(--neon-primary);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.neon-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* 色彩预设 */
+.theme-presets {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.preset-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+}
+
+.preset-btn:hover {
+    transform: scale(1.15);
+}
+
+.preset-btn.active {
+    border-color: #fff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* -------------------------------------------------------------
+ * 10. SCI-FI GEK TERMINAL SECTION (科幻终端)
+ * ------------------------------------------------------------- */
+.terminal-container {
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(8, 10, 20, 0.8);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+}
+
+.terminal-header {
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.terminal-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.action-dot.red { background-color: #ef4444; }
+.action-dot.yellow { background-color: #f59e0b; }
+.action-dot.green { background-color: #10b981; }
+
+.terminal-title {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.terminal-info-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--neon-primary);
+    background: var(--neon-primary-glow);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid hsla(var(--primary-hue), 85%, 65%, 0.3);
+    font-family: var(--font-heading);
+    letter-spacing: 0.5px;
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.terminal-line {
+    color: var(--text-secondary);
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.terminal-line.user-cmd {
+    color: var(--text-main);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.terminal-line.system-msg {
+    color: var(--neon-secondary);
+}
+
+.terminal-line.success-msg {
+    color: #10b981;
+}
+
+.terminal-line.ascii-art {
+    line-height: 1.25;
+    color: var(--neon-primary);
+    font-size: 0.8rem;
+}
+
+.cmd-highlight {
+    color: var(--neon-primary);
+    font-weight: 600;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    position: relative;
+}
+
+.terminal-prompt {
+    color: var(--neon-primary);
+    font-weight: bold;
+}
+
+.terminal-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+#terminal-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    z-index: 10;
+    caret-color: transparent;
+}
+
+.terminal-visible-text {
+    color: var(--text-main);
+    white-space: pre;
+    font-family: inherit;
+    line-height: 1;
+}
+
+/* 闪烁光标 */
+.terminal-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background-color: var(--neon-primary);
+    box-shadow: 0 0 8px var(--neon-primary);
+    animation: flash 1s steps(2, start) infinite;
+    pointer-events: none;
+    margin-left: 2px;
+}
+
+@keyframes flash {
+    to { visibility: hidden; }
+}
+
+/* -------------------------------------------------------------
+ * 11. FOOTER (页脚)
+ * ------------------------------------------------------------- */
+.footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2.5rem 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 6rem;
+}
+
+/* -------------------------------------------------------------
+ * 12. RESPONSIVENESS (响应式设计)
+ * ------------------------------------------------------------- */
+@media (max-width: 1024px) {
+    .hero-section {
+        flex-direction: column-reverse;
+        padding-top: 8rem;
+        gap: 3rem;
+        text-align: center;
+    }
+    
+    .hero-content {
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hub-grid, .lab-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1.25rem 2rem;
+    }
+    
+    .nav-links {
+        display: none; /* 移动端可隐藏或制作折叠菜单，简化版在此处隐藏 */
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .hub-card .card-content {
+        padding: 2rem;
+    }
+}
+
+/* ==========================================================================
+   13. 自定义科幻霓虹光标系统 (Custom Sci-Fi Neon Cursor System)
+   ========================================================================== */
+
+/* 仅在 JavaScript 自定义光标成功初始化并添加类后才隐藏系统默认光标，提供 Fail-safe 回退 */
+body.custom-cursor-enabled,
+body.custom-cursor-enabled a,
+body.custom-cursor-enabled button,
+body.custom-cursor-enabled input,
+body.custom-cursor-enabled select,
+body.custom-cursor-enabled textarea,
+body.custom-cursor-enabled .tilt-card,
+body.custom-cursor-enabled .preview-item,
+body.custom-cursor-enabled .preset-btn,
+body.custom-cursor-enabled .progress-bar-wrap,
+body.custom-cursor-enabled #webgl-container,
+body.custom-cursor-enabled #webgl-container canvas {
+    cursor: none !important;
+}
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    display: none; /* 默认隐藏，JS 激活后显示 */
+}
+
+body.custom-cursor-enabled .custom-cursor {
+    display: block;
+}
+
+/* 霓虹核心小圆点 */
+.cursor-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background-color: var(--neon-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--neon-primary), 0 0 20px var(--neon-primary-glow);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                height 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.3s ease, 
+                box-shadow 0.3s ease;
+}
+
+/* 十字瞄准星外圆 */
+.cursor-crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.4);
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--neon-primary);
+    border-radius: 50%;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.3s ease;
+    pointer-events: none;
+}
+
+/* 十字准星刻度线 */
+.ch-line {
+    position: absolute;
+    background-color: var(--neon-primary);
+    transition: background-color 0.3s ease;
+}
+
+.ch-h {
+    top: 50%;
+    left: -6px;
+    width: 42px;
+    height: 1px;
+    transform: translateY(-50%);
+}
+
+.ch-v {
+    left: 50%;
+    top: -6px;
+    height: 42px;
+    width: 1px;
+    transform: translateX(-50%);
+}
+
+/* -------------------------------------------------------------
+ * 悬停可交互元素激活状态
+ * ------------------------------------------------------------- */
+.custom-cursor.hovering .cursor-dot {
+    width: 4px;
+    height: 4px;
+    background-color: var(--neon-secondary);
+    box-shadow: 0 0 8px var(--neon-secondary);
+}
+
+.custom-cursor.hovering .cursor-crosshair {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    border-color: var(--neon-secondary);
+}
+
+.custom-cursor.hovering .ch-line {
+    background-color: var(--neon-secondary);
+}
+
+/* -------------------------------------------------------------
+ * 拖拽旋转 WebGL 地球抓取激活状态
+ * ------------------------------------------------------------- */
+.custom-cursor.grabbing .cursor-dot {
+    width: 5px;
+    height: 5px;
+    background-color: var(--neon-secondary);
+    box-shadow: 0 0 10px var(--neon-secondary);
+    transform: translate(-50%, -50%) scale(0.7);
+}
+
+/* -------------------------------------------------------------
+ * 鼠标尾迹消散粒子
+ * ------------------------------------------------------------- */
+.cursor-trail-particle {
+    position: fixed;
+    width: 5px;
+    height: 5px;
+    background-color: var(--neon-secondary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 8px var(--neon-secondary), 0 0 16px var(--neon-secondary-glow);
+    animation: fade-particle 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fade-particle {
+    0% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.1);
+    }
+}
