@@ -8,7 +8,6 @@ export default function CustomCursor() {
   const mousePos = useRef({ x: 0, y: 0 })
   const cursorPos = useRef({ x: 0, y: 0 })
   const trailCounter = useRef(0)
-  const particlePoolRef = useRef([])
   const poolIndexRef = useRef(0)
 
   useEffect(() => {
@@ -24,25 +23,28 @@ export default function CustomCursor() {
       particle.className = 'cursor-trail-particle'
       particle.style.opacity = '0'
       document.body.appendChild(particle)
-      pool.push({ el: particle, life: 0 })
+      pool.push(particle)
     }
-    particlePoolRef.current = pool
 
     const handleMouseMove = (e) => {
-      mousePos.current = { x: e.clientX, y: e.clientY }
+      // 复用对象，避免高频 mousemove 产生 GC 压力
+      mousePos.current.x = e.clientX
+      mousePos.current.y = e.clientY
 
       // 每隔几次移动才激活一个粒子，从池中取下一个复用
       trailCounter.current++
       if (trailCounter.current % 3 === 0) {
-        const item = pool[poolIndexRef.current]
+        const el = pool[poolIndexRef.current]
         poolIndexRef.current = (poolIndexRef.current + 1) % POOL_SIZE
-        item.el.style.left = `${e.clientX}px`
-        item.el.style.top = `${e.clientY}px`
-        // 重新触发动画：先重置再启用
-        item.el.style.animation = 'none'
-        // 强制回流以重启动画
-        void item.el.offsetWidth
-        item.el.style.animation = 'fade-particle 0.5s cubic-bezier(0.16,1,0.3,1) forwards'
+        // 用 Web Animations API 替代 CSS animation + 强制回流
+        // 完全避免 void offsetWidth 的同步布局开销
+        el.animate(
+          [
+            { opacity: 0.8, transform: `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%) scale(1)` },
+            { opacity: 0, transform: `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%) scale(0.1)` },
+          ],
+          { duration: 500, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
+        )
       }
     }
 
@@ -68,8 +70,8 @@ export default function CustomCursor() {
     const animate = () => {
       cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.15
       cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.15
-      cursor.style.left = `${cursorPos.current.x}px`
-      cursor.style.top = `${cursorPos.current.y}px`
+      // 用 translate3d 走 GPU 合成层，避免触发 layout
+      cursor.style.transform = `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0) translate(-50%, -50%)`
       animationFrame = requestAnimationFrame(animate)
     }
 
@@ -88,8 +90,7 @@ export default function CustomCursor() {
       document.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('mouseup', handleMouseUp)
       cancelAnimationFrame(animationFrame)
-      // 清理池中所有粒子节点
-      pool.forEach((item) => item.el.remove())
+      pool.forEach((el) => el.remove())
     }
   }, [])
 

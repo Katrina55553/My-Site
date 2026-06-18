@@ -3,7 +3,7 @@
  * ------------------------------------------------------------- */
 :root {
   --primary-hue: 280;
-  --primary-glow: 100%;
+  --primary-glow: 100;
 
   --neon-primary: hsl(var(--primary-hue), 85%, 65%);
   --neon-secondary: hsl(calc(var(--primary-hue) + 40), 90%, 60%);
@@ -144,6 +144,17 @@ body {
 .container { max-width: 1700px; margin: 0 auto; padding: 0 3rem; }
 .section { padding: 7rem 0 3rem 0; }
 .section-header { margin-bottom: 4rem; text-align: center; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 1.5rem; padding: 0.5rem 1.2rem; border-radius: 100px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
+  color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; font-weight: 500;
+  transition: var(--transition-smooth);
+}
+.back-link:hover {
+  color: var(--text-main); border-color: var(--neon-primary);
+  box-shadow: 0 0 15px var(--neon-primary-glow); transform: translateX(-3px);
+}
 .section-title {
   font-family: var(--font-heading); font-size: 2.5rem; font-weight: 700;
   letter-spacing: -0.5px; margin-bottom: 1rem; position: relative; display: inline-block;
@@ -213,7 +224,7 @@ body {
 /* -------------------------------------------------------------
  * 8. HUB SECTION (项目中转站)
  * ------------------------------------------------------------- */
-.hub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+.hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
 .hub-card {
   position: relative; border-radius: 24px; overflow: hidden;
   background: var(--bg-surface); border: 1px solid var(--border-color);
@@ -529,6 +540,10 @@ body {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem; width: 100%; margin-bottom: 3rem;
 }
+.contact-cards--compact {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 600px; margin: 0 auto 3rem;
+}
 .contact-card {
   position: relative; display: flex; align-items: center; gap: 1rem;
   padding: 1.5rem; border-radius: 18px;
@@ -627,7 +642,8 @@ body {
   .hero-content { max-width: 100%; display: flex; flex-direction: column; align-items: center; }
   .hero-title { font-size: 3rem; }
   .hero-buttons { justify-content: center; }
-  .hub-grid, .lab-grid { grid-template-columns: 1fr; }
+  .hub-grid { grid-template-columns: 1fr; }
+  .lab-grid { grid-template-columns: 1fr; }
   .resume-grid { grid-template-columns: 1fr; }
   .contact-cards { grid-template-columns: repeat(2, 1fr); }
   .contact-form__grid { grid-template-columns: 1fr; }
@@ -666,7 +682,7 @@ body.custom-cursor-enabled #webgl-container,
 body.custom-cursor-enabled #webgl-container canvas {
   cursor: none !important;
 }
-.custom-cursor { position: fixed; top: 0; left: 0; width: 20px; height: 20px; pointer-events: none; z-index: 99999; transform: translate(-50%,-50%); display: none; }
+.custom-cursor { position: fixed; top: 0; left: 0; width: 20px; height: 20px; pointer-events: none; z-index: 99999; will-change: transform; display: none; }
 body.custom-cursor-enabled .custom-cursor { display: block; }
 .cursor-dot {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
@@ -688,9 +704,8 @@ body.custom-cursor-enabled .custom-cursor { display: block; }
 .custom-cursor.hovering .ch-line { background-color: var(--neon-secondary); }
 .custom-cursor.grabbing .cursor-dot { width: 5px; height: 5px; background-color: var(--neon-secondary); box-shadow: 0 0 10px var(--neon-secondary); transform: translate(-50%,-50%) scale(0.7); }
 .cursor-trail-particle {
-  position: fixed; width: 5px; height: 5px; background-color: var(--neon-secondary);
-  border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%,-50%);
+  position: fixed; top: 0; left: 0; width: 5px; height: 5px; background-color: var(--neon-secondary);
+  border-radius: 50%; pointer-events: none; z-index: 99998;
+  will-change: transform, opacity;
   box-shadow: 0 0 8px var(--neon-secondary), 0 0 16px var(--neon-secondary-glow);
-  animation: fade-particle 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-@keyframes fade-particle { 0% { opacity: 0.8; transform: translate(-50%,-50%) scale(1); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(0.1); } }

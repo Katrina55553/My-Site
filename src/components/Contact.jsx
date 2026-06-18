@@ -1,15 +1,13 @@
-import { Mail, Github, Twitter, Linkedin, ArrowUp, Send, MapPin, MessageCircle } from 'lucide-react'
+import { Mail, Github, ArrowUp, MapPin, MessageCircle, Send } from 'lucide-react'
 
 const CONTACTS = [
   { icon: Mail, label: '邮箱', value: 'katrina@example.com', href: 'mailto:katrina@example.com', color: '#ef4444' },
-  { icon: Github, label: 'GitHub', value: '@katrina-dev', href: 'https://github.com', color: '#a855f7' },
-  { icon: Twitter, label: 'Twitter', value: '@katrina_ui', href: 'https://twitter.com', color: '#06b6d4' },
-  { icon: Linkedin, label: 'LinkedIn', value: 'Katrina Frontend', href: 'https://linkedin.com', color: '#3b82f6' },
+  { icon: Github, label: 'GitHub', value: '@Katrina55553', href: 'https://github.com/Katrina55553', color: '#a855f7' },
 ]
 
 const QUICK_INFO = [
   { icon: MapPin, label: '所在地', value: '中国 · 上海' },
-  { icon: MessageCircle, label: '响应时间', value: '通常 24 小时内' },
+  { icon: MessageCircle, label: '响应时间', value: '12 小时内' },
   { icon: Send, label: '合作状态', value: '接受自由职业 & 全职' },
 ]
 
@@ -51,7 +49,7 @@ export default function Contact() {
         </div>
 
         {/* 联系方式卡片网格 */}
-        <div className="contact-cards">
+        <div className="contact-cards contact-cards--compact">
           {CONTACTS.map((contact, i) => {
             const Icon = contact.icon
             return (
@@ -76,51 +74,6 @@ export default function Contact() {
             )
           })}
         </div>
-
-        {/* 留言表单 */}
-        <form
-          className="contact-form glass-card"
-          onSubmit={(e) => {
-            e.preventDefault()
-            const form = e.currentTarget
-            const btn = form.querySelector('.contact-form__submit')
-            const original = btn.innerHTML
-            btn.innerHTML = '<span>消息已发送 ✓</span>'
-            btn.classList.add('sent')
-            setTimeout(() => {
-              btn.innerHTML = original
-              btn.classList.remove('sent')
-              form.reset()
-            }, 2200)
-          }}
-        >
-          <div className="contact-form__header">
-            <h3>发送一条消息</h3>
-            <p>留下你的想法，我会尽快回复你。</p>
-          </div>
-          <div className="contact-form__grid">
-            <div className="form-group">
-              <label>姓名</label>
-              <input type="text" name="name" placeholder="你的名字" required />
-            </div>
-            <div className="form-group">
-              <label>邮箱</label>
-              <input type="email" name="email" placeholder="your@email.com" required />
-            </div>
-          </div>
-          <div className="form-group">
-            <label>主题</label>
-            <input type="text" name="subject" placeholder="想聊点什么？" required />
-          </div>
-          <div className="form-group">
-            <label>消息内容</label>
-            <textarea name="message" rows="4" placeholder="在这里写下你的消息..." required></textarea>
-          </div>
-          <button type="submit" className="contact-form__submit">
-            <Send size={18} />
-            <span>发送消息</span>
-          </button>
-        </form>
 
         {/* 回到顶部 */}
         <a href="#hero" className="back-to-top">
