@@ -50,7 +50,7 @@ export default function Navbar({ activeSection }) {
       </nav>
       <div className="nav-actions">
         <a
-          href="https://github.com/Katrina55553"
+          href="https://github.com/ambition55553"
           target="_blank"
           rel="noopener noreferrer"
           className="github-btn"

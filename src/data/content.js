@@ -1,103 +1,98 @@
 // 项目展示数据
 export const projects = [
   {
-    name: 'Gravity-UI-Lab',
-    description: '炫酷的拟物与毛玻璃组件样式库，包含 30+ 可复用的 CSS 组件，支持主题定制与暗色模式。',
-    tags: ['CSS', 'JavaScript', '组件库'],
-    link: '#',
-    icon: 'layout-grid',
-    highlights: ['30+ 组件', '主题定制', '暗色模式'],
-  },
-  {
-    name: 'React-Three-Universe',
-    description: '基于 Three.js 的 3D 银河系交互模型，支持鼠标拖拽旋转、缩放探索，包含 5000+ 粒子星系。',
-    tags: ['React', 'Three.js', 'WebGL'],
-    link: '#',
-    icon: 'globe',
-    highlights: ['5000+ 粒子', '拖拽交互', '视差效果'],
-  },
-  {
-    name: 'CyberShell-Terminal',
-    description: '轻量级网页仿真终端组件，支持自定义命令注册、命令历史、自动补全，TypeScript 编写。',
-    tags: ['TypeScript', '终端', '组件'],
-    link: '#',
-    icon: 'terminal',
-    highlights: ['命令注册', '历史记录', 'TS 支持'],
-  },
-  {
-    name: 'Neon-Canvas-Fireworks',
-    description: '基于 Canvas 的烟花动效库，支持物理引擎模拟、粒子拖尾、多色混合，性能优化至 60fps。',
-    tags: ['Canvas', '动画', '性能优化'],
+    name: '简历智诊 Agent',
+    description: 'AI 驱动的简历诊断与模拟面试系统：上传简历 → AI 深度诊断 → 多轮模拟面试 → 量化评估报告，全流程由 LangGraph 状态机编排。',
+    tags: ['React', 'FastAPI', 'LangGraph', 'PostgreSQL', 'Redis', 'Docker'],
     link: '#',
     icon: 'sparkles',
-    highlights: ['60fps', '物理引擎', '粒子系统'],
+    highlights: ['LangGraph 状态机', 'RAG 三级混合检索', 'MCP Agent Skills', 'WebSocket 流式推送'],
+  },
+  {
+    name: 'OJ 在线判题系统',
+    description: '前后端分离的在线判题平台，支持多语言代码提交与判题、题库管理、提交记录与讨论区，自研 Docker 代码沙箱与异步判题架构。',
+    tags: ['Vue3', 'Spring Boot', 'MySQL', 'Redis', 'RabbitMQ', 'Docker'],
+    link: '#',
+    icon: 'terminal',
+    highlights: ['DooD 6 层沙箱隔离', 'RabbitMQ 异步判题', '策略模式判题', 'Redis+Lua 限流'],
   },
 ]
 
 // 博客预览数据
 export const blogPosts = [
-  { tag: '前端技术', title: '深入理解 CSS Backdrop-filter 毛玻璃特效' },
-  { tag: '动效设计', title: 'Web 3D 卡片悬停倾斜（Tilt）的交互实现' },
-  { tag: '创意编程', title: '基于 Canvas 粒子系统的烟花网页动效' },
+  { tag: 'AI 工程', title: 'LangGraph 状态机编排面试流程的工程实践' },
+  { tag: '后端架构', title: 'RabbitMQ 死信队列构建异步判题系统的设计' },
+  { tag: '算法竞赛', title: 'ACM-ICPC 银奖选手的算法学习路线分享' },
 ]
 
 // 简历数据
 export const resume = {
-  name: 'Katrina',
-  title: '前端开发工程师 / 创意交互设计师',
-  summary: '深耕前端开发与创意交互的工程师，坚信卓越的 UI/UX 是代码的灵魂。在零与一的虚拟星空，构建具备引力效应的设计。',
+  name: '刘俊威',
+  title: 'AI 全栈开发工程师',
+  summary: '具备 AI 全栈开发能力，熟练使用 Claude Code / Cursor 等 AI 编程工具高效交付产品。从需求分析、架构设计、前后端开发到部署运维均能独立完成，已上线 10+ 个可访问产品。持续跟进 AI 大模型与 Agent 生态发展，掌握 MCP Server 与 Agent Skills 开发。',
   skills: [
-    { category: '前端框架', items: ['React', 'Vue3', 'Next.js'] },
-    { category: '样式与动效', items: ['CSS3', 'Sass', 'Tailwind', 'Framer Motion'] },
-    { category: '3D 与可视化', items: ['Three.js', 'WebGL', 'Canvas', 'D3.js'] },
-    { category: '工程化', items: ['Vite', 'Webpack', 'TypeScript', 'Git'] },
-    { category: '后端', items: ['Node.js', 'Express', 'MongoDB'] },
+    { category: 'AI 全栈', items: ['Claude Code', 'Cursor', 'MCP Server', 'Agent Skills', 'LangGraph'] },
+    { category: '后端框架', items: ['Spring Boot', 'FastAPI', 'RESTful API'] },
+    { category: '前端框架', items: ['React', 'Vue3', 'UI 组件库'] },
+    { category: '数据库', items: ['MySQL', 'PostgreSQL', 'Redis', 'MongoDB', '向量数据库'] },
+    { category: '中间件', items: ['RabbitMQ', 'Nginx', 'Elasticsearch'] },
+    { category: 'DevOps', items: ['Docker', 'GitHub Actions', 'Linux', 'Git'] },
   ],
   experience: [
     {
-      role: '高级前端工程师',
-      company: 'Tech Creative Studio',
-      period: '2024 — 至今',
-      description: '负责创意网页开发与 3D 交互体验设计，主导多个品牌官网与互动营销项目。',
-      achievements: ['搭建团队前端组件库，提升开发效率 40%', '主导 3D 产品展示页开发，转化率提升 25%'],
+      role: '简历智诊 Agent',
+      company: 'AI 全栈项目 · React + FastAPI + LangGraph',
+      period: '个人项目',
+      description: 'AI 驱动的简历诊断与模拟面试系统：上传简历 → AI 深度诊断 → 多轮模拟面试 → 量化评估报告。',
+      achievements: [
+        '使用 LangGraph 状态机编排面试流程，根据回答质量动态决策追问/切换/生成报告，三层防死循环机制',
+        'RAG 三级混合检索（Embedding 向量 + Elasticsearch 全文 + 关键词匹配）与 Tool Calling 机制，自主调用知识库检索、简历字段查询、代码片段验证三个工具，根据上下文动态决定而非固定流程预加载',
+        '利用 MCP 协议将系统封装为标准化 Agent Skills，定义 7 个工具接口，支持主流 AI 编程工具直接调用',
+        '基于 WebSocket 实时面试对话，支持断线自动重连与 Redis 缓存，LLM 响应流式推送，断线期间消息不丢失',
+      ],
     },
     {
-      role: '前端开发工程师',
-      company: 'Digital Innovation Lab',
-      period: '2022 — 2024',
-      description: '专注于 WebGL 可视化与数据交互大屏开发，交付 10+ 企业级数据看板。',
-      achievements: ['优化大屏渲染性能，帧率提升至 60fps', '封装可复用图表组件库，覆盖 20+ 场景'],
-    },
-    {
-      role: '前端实习生',
-      company: 'StartUp Hub',
-      period: '2021 — 2022',
-      description: '参与 SaaS 产品前端开发，负责表单引擎与权限模块。',
-      achievements: ['实现动态表单渲染引擎', '完成权限系统前端架构'],
+      role: 'OJ 在线判题系统',
+      company: '全栈项目 · Vue3 + Spring Boot + RabbitMQ',
+      period: '个人项目',
+      description: '前后端分离架构的在线判题平台，支持多语言代码提交与判题、题库管理、提交记录、讨论区等功能。',
+      achievements: [
+        '自研 Docker 代码沙箱架构（DooD），实现 6 层安全隔离（内存/CPU/网络/PID/文件系统/用户）',
+        '利用 RabbitMQ 手动确认 + 死信队列构建异步判题系统，响应时间快 100 倍，吞吐量提升 10 倍',
+        '判题模块使用策略模式封装不同语言的判题逻辑，替代 if-else 分支，遵循开闭原则，易于系统扩展和维护',
+        '基于 Redis + Lua 脚本实现滑动窗口限流，结合 AOP + 自定义注解无侵入式接入，有效拦截恶意刷接口行为',
+        '基于 JWT 实现无状态登录，用 Redis 维护 Token 黑名单，支持 user/admin/ban 三级角色',
+      ],
     },
   ],
   education: [
     {
-      degree: '计算机科学与技术 · 学士',
-      school: '某科技大学',
-      period: '2018 — 2022',
-      description: '主修 Web 开发、计算机图形学、人机交互。GPA 3.8/4.0，获校级奖学金。',
+      degree: '本科',
+      school: '',
+      period: '2024.09 — 2028.07',
+      description: '活跃于算法竞赛领域，获 ACM-ICPC 银奖、蓝桥杯全国一等奖等荣誉。',
     },
+  ],
+  awards: [
+    { name: '第 51 届 ACM-ICPC 国际大学生程序设计竞赛银奖', period: '2025' },
+    { name: '2026 ACM-CCPC 中国大学生程序设计竞赛银奖', period: '2026' },
+    { name: '第十七届蓝桥杯程序设计竞赛全国一等奖', period: '2026' },
+    { name: 'CET-6 大学英语六级', period: '' },
   ],
 }
 
 // 终端命令数据
 export const terminalCommands = {
   about: {
-    title: '【Katrina // 跨界数字创作者】',
+    title: '【刘俊威 // AI 全栈开发工程师】',
     lines: [
-      '我是一名深耕前端开发与创意交互的工程师。我坚信卓越的 UI/UX 是代码的灵魂。',
-      '技术栈：HTML5 / CSS3 / ES6+ / React / Vue3 / WebGL / Node.js',
-      '格言：在零与一的虚拟星空，构建具备引力效应的设计。',
+      'AI 全栈开发工程师，专注全栈开发与 Agent 生态。',
+      '技术栈：Spring Boot / FastAPI / React / Vue3 / LangGraph / Docker / Redis',
+      '已上线 10+ 个可访问产品，熟练使用 Claude Code / Cursor 等 AI 编程工具高效交付。',
     ],
   },
   projects: {
-    header: '开源精选项目列表：',
+    header: '核心项目列表：',
     items: projects.map(p => ({
       name: p.name,
       desc: p.description,

@@ -1,14 +1,16 @@
-import { Mail, Github, ArrowUp, MapPin, MessageCircle, Send } from 'lucide-react'
+import { Mail, Github, ArrowUp, MapPin, MessageCircle, Send, Globe, Phone } from 'lucide-react'
 
 const CONTACTS = [
-  { icon: Mail, label: '邮箱', value: 'katrina@example.com', href: 'mailto:katrina@example.com', color: '#ef4444' },
-  { icon: Github, label: 'GitHub', value: '@Katrina55553', href: 'https://github.com/Katrina55553', color: '#a855f7' },
+  { icon: Mail, label: '邮箱', value: 'ambition55553@gmail.com', href: 'mailto:ambition55553@gmail.com', color: '#ef4444' },
+  { icon: Github, label: 'GitHub', value: '@ambition55553', href: 'https://github.com/ambition55553', color: '#a855f7' },
+  { icon: Globe, label: '个人作品集', value: 'cogod.cn', href: 'https://cogod.cn', color: '#3b82f6' },
+  { icon: Phone, label: '电话', value: '13817153416', href: 'tel:13817153416', color: '#10b981' },
 ]
 
 const QUICK_INFO = [
   { icon: MapPin, label: '所在地', value: '中国 · 上海' },
   { icon: MessageCircle, label: '响应时间', value: '12 小时内' },
-  { icon: Send, label: '合作状态', value: '接受自由职业 & 全职' },
+  { icon: Send, label: '合作状态', value: '接受实习 & 项目合作' },
 ]
 
 export default function Contact() {

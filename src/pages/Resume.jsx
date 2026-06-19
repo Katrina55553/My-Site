@@ -18,7 +18,7 @@ export default function Resume() {
         {/* 左侧：个人信息 + 技能 + 教育 */}
         <div className="resume-sidebar">
           <div className="resume-card glass-card resume-profile">
-            <div className="resume-profile__avatar">K</div>
+            <div className="resume-profile__avatar">刘</div>
             <h3 className="resume-profile__name">{resume.name}</h3>
             <p className="resume-profile__title">{resume.title}</p>
             <p className="resume-profile__summary">{resume.summary}</p>
@@ -51,11 +51,26 @@ export default function Resume() {
               </div>
             ))}
           </div>
+
+          <div className="resume-card glass-card">
+            <h3 className="resume-card__title">荣誉奖项</h3>
+            <div className="awards-list">
+              {resume.awards.map((award, i) => (
+                <div key={i} className="award-item">
+                  <span className="award-icon">★</span>
+                  <div className="award-content">
+                    <div className="award-name">{award.name}</div>
+                    {award.period && <div className="award-period">{award.period}</div>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* 右侧：工作经历时间线 */}
+        {/* 右侧：项目经历时间线 */}
         <div className="resume-card glass-card">
-          <h3 className="resume-card__title">工作经历</h3>
+          <h3 className="resume-card__title">项目经历</h3>
           <div className="resume-timeline">
             {resume.experience.map((exp, i) => (
               <div key={i} className="timeline-item">

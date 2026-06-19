@@ -18,7 +18,7 @@ export default function Projects() {
           <span>返回主页</span>
         </Link>
         <h2 className="section-title">项目展示</h2>
-        <p className="section-desc">精选开源项目与 Web 应用，涵盖组件库、3D 交互、终端工具与动效库。</p>
+        <p className="section-desc">AI 全栈与后端工程项目展示，涵盖 Agent 编排、RAG 检索、异步架构与代码沙箱等核心实践。</p>
       </div>
 
       <div className="projects-grid">

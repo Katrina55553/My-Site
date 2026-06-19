@@ -6,14 +6,14 @@ export default function Hero({ hue, children }) {
       <div className="hero-content">
         <div className="badge-container">
           <span className="pulse-dot"></span>
-          <span className="badge-text">Available for Freelance &amp; Projects</span>
+          <span className="badge-text">AI Full-Stack Developer &amp; Open to Internships</span>
         </div>
         <h1 className="hero-title">
-          探索代码与设计<br />
-          的<span className="gradient-text">无限可能</span>
+          用代码构建<br />
+          <span className="gradient-text">AI 全栈未来</span>
         </h1>
         <p className="hero-subtitle">
-          欢迎来到我的个人空间。这里是我探索炫酷 UI 动效的实验基地，也是通往我所有博客文章与项目作品的中央枢纽。
+          刘俊威 · AI 全栈开发工程师。熟练使用 Claude Code / Cursor 高效交付产品，已上线 10+ 个可访问项目，专注 Agent 生态与工程化落地。
         </p>
         <div className="hero-buttons">
           <a href="#hub" className="btn btn-primary">
