@@ -53,9 +53,6 @@ function HomePage({ hue, setHue, glow, setGlow, activeSection, setActiveSection 
       <Suspense fallback={<SectionFallback />}>
         <Terminal />
       </Suspense>
-      <Suspense fallback={<SectionFallback />}>
-        <Contact />
-      </Suspense>
     </main>
   )
 }
@@ -143,6 +140,16 @@ export default function App() {
             <SubPage>
               <Suspense fallback={<SectionFallback />}>
                 <ResumePage />
+              </Suspense>
+            </SubPage>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <SubPage>
+              <Suspense fallback={<SectionFallback />}>
+                <Contact />
               </Suspense>
             </SubPage>
           }

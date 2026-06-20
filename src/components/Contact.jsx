@@ -1,8 +1,9 @@
-import { Mail, Github, ArrowUp, MapPin, MessageCircle, Send, Globe, Phone } from 'lucide-react'
+import { Mail, Github, ArrowUp, MapPin, MessageCircle, Send, Globe, Phone, ArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const CONTACTS = [
   { icon: Mail, label: '邮箱', value: 'ambition55553@gmail.com', href: 'mailto:ambition55553@gmail.com', color: '#ef4444' },
-  { icon: Github, label: 'GitHub', value: '@ambition55553', href: 'https://github.com/ambition55553', color: '#a855f7' },
+  { icon: Github, label: 'GitHub', value: '@Katrina55553', href: 'https://github.com/Katrina55553', color: '#a855f7' },
   { icon: Globe, label: '个人作品集', value: 'cogod.cn', href: 'https://cogod.cn', color: '#3b82f6' },
   { icon: Phone, label: '电话', value: '13817153416', href: 'tel:13817153416', color: '#10b981' },
 ]
@@ -16,6 +17,10 @@ const QUICK_INFO = [
 export default function Contact() {
   return (
     <section id="contact" className="contact-section">
+      <Link to="/" className="back-link">
+        <ArrowLeft size={18} />
+        <span>返回主页</span>
+      </Link>
       <div className="contact-inner">
         <div className="contact-header">
           <span className="contact-badge">
@@ -76,12 +81,6 @@ export default function Contact() {
             )
           })}
         </div>
-
-        {/* 回到顶部 */}
-        <a href="#hero" className="back-to-top">
-          <ArrowUp size={20} />
-          <span>回到顶部</span>
-        </a>
       </div>
     </section>
   )
