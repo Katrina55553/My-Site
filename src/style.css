@@ -2,7 +2,7 @@
  * 1. DESIGN SYSTEM & CUSTOM PROPERTIES
  * ------------------------------------------------------------- */
 :root {
-  --primary-hue: 280;
+  --primary-hue: 70;
   --primary-glow: 100;
 
   --neon-primary: hsl(var(--primary-hue), 85%, 65%);
@@ -53,8 +53,8 @@ body {
   z-index: -2; overflow: hidden; pointer-events: none;
 }
 .glow-orb {
-  position: absolute; border-radius: 50%; filter: blur(140px);
-  opacity: 0.18; mix-blend-mode: screen; will-change: transform;
+  position: absolute; border-radius: 50%; filter: blur(160px);
+  opacity: 0.10; mix-blend-mode: screen; will-change: transform;
 }
 .orb-1 {
   width: 45vw; height: 45vw;
@@ -141,12 +141,12 @@ body {
 /* -------------------------------------------------------------
  * 6. CONTAINER & LAYOUTS
  * ------------------------------------------------------------- */
-.container { max-width: 1700px; margin: 0 auto; padding: 0 3rem; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
 .section { padding: 7rem 0 3rem 0; }
 .section-header { margin-bottom: 4rem; text-align: center; }
 .back-link {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  margin-bottom: 1.5rem; padding: 0.5rem 1.2rem; border-radius: 100px;
+  margin: 0 0 1.5rem 3rem; padding: 0.5rem 1.2rem; border-radius: 100px;
   background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
   color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; font-weight: 500;
   transition: var(--transition-smooth);
@@ -196,7 +196,7 @@ body {
 .gradient-text {
   background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 40px var(--neon-primary-glow);
+  text-shadow: 0 0 30px hsla(var(--primary-hue), 85%, 65%, 0.25);
 }
 .hero-subtitle { font-size: 1.2rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 2.5rem; }
 .hero-buttons { display: flex; gap: 1.5rem; }
@@ -241,6 +241,11 @@ body {
 .hub-card:hover { border-color: var(--neon-primary); box-shadow: 0 12px 40px var(--neon-primary-glow); }
 .hub-card:hover .card-glow { opacity: 1; }
 .card-content { padding: 3rem; height: 100%; display: flex; flex-direction: column; z-index: 2; position: relative; transform: translateZ(30px); }
+/* 整卡可点击：保留 flex 布局，清除默认 a 标签样式 */
+.card-content--link,
+.project-card--link {
+  color: inherit; text-decoration: none; cursor: pointer;
+}
 .card-header-icon {
   width: 60px; height: 60px; border-radius: 16px;
   background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
@@ -307,12 +312,15 @@ body {
 }
 .project-card__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
 .project-card__tag { font-size: 0.75rem; color: var(--text-muted); background: rgba(255,255,255,0.02); padding: 0.25rem 0.7rem; border-radius: 6px; }
+.project-card__links { display: flex; gap: 1.2rem; margin-top: auto; flex-wrap: wrap; }
 .project-card__link {
   display: inline-flex; align-items: center; gap: 0.5rem;
   color: var(--neon-primary); font-weight: 600; font-size: 0.9rem;
-  text-decoration: none; transition: var(--transition-smooth); margin-top: auto;
+  text-decoration: none; transition: var(--transition-smooth);
 }
 .project-card__link:hover { gap: 0.8rem; color: var(--neon-secondary); }
+.project-card__link--repo { color: var(--text-secondary); }
+.project-card__link--repo:hover { color: var(--neon-secondary); }
 
 /* -------------------------------------------------------------
  * 9. RESUME SECTION (简历模块)

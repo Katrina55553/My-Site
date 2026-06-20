@@ -66,7 +66,7 @@ function SubPage({ children }) {
 }
 
 export default function App() {
-  const [hue, setHue] = useState(280)
+  const [hue, setHue] = useState(70)
   const [glow, setGlow] = useState(100)
   const [activeSection, setActiveSection] = useState('hero')
   const location = useLocation()

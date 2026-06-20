@@ -66,10 +66,10 @@ export default function CustomCursor() {
     const handleMouseDown = () => cursor.classList.add('grabbing')
     const handleMouseUp = () => cursor.classList.remove('grabbing')
 
-    // Lerp 缓动动画
+    // Lerp 缓动动画：系数越高越跟手（0.15 在高 DPI 下显得拖沓滞后）
     const animate = () => {
-      cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.15
-      cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.15
+      cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.35
+      cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.35
       // 用 translate3d 走 GPU 合成层，避免触发 layout
       cursor.style.transform = `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0) translate(-50%, -50%)`
       animationFrame = requestAnimationFrame(animate)

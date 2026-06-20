@@ -3,10 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const NAV_ITEMS = [
   { id: 'hero', label: '主页', path: '/' },
-  { id: 'projects', label: '精选项目', path: '/projects' },
-  { id: 'resume', label: '简历', path: '/resume' },
-  { id: 'lab', label: 'UI实验室', path: '/', hash: 'lab' },
-  { id: 'terminal-section', label: '命令终端', path: '/', hash: 'terminal-section' },
+  { id: 'projects', label: '我的项目', path: '/projects' },
+  { id: 'resume', label: '个人简历', path: '/resume' },
   { id: 'contact', label: '联系我', path: '/', hash: 'contact' },
 ]
 
