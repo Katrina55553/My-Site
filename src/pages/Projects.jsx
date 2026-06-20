@@ -26,15 +26,8 @@ export default function Projects() {
           const Icon = ICON_MAP[project.icon] || LayoutGrid
           const hasLiveLink = project.link && project.link !== '#'
           const hasRepo = project.repo && project.repo !== '#'
-          // 整卡点击主链接：优先在线访问，其次 GitHub
-          const cardHref = hasLiveLink ? project.link : hasRepo ? project.repo : null
-          const stop = (e) => e.stopPropagation()
-          const CardWrapper = cardHref ? 'a' : 'div'
-          const wrapperProps = cardHref
-            ? { href: cardHref, target: '_blank', rel: 'noopener noreferrer' }
-            : {}
           return (
-            <CardWrapper key={i} className="project-card project-card--link" {...wrapperProps}>
+            <div key={i} className="project-card">
               <div className="project-card__icon">
                 <Icon size={24} />
               </div>
@@ -50,7 +43,7 @@ export default function Projects() {
                   <span key={j} className="project-card__tag">{t}</span>
                 ))}
               </div>
-              <div className="project-card__links" onClick={stop}>
+              <div className="project-card__links">
                 {hasLiveLink ? (
                   <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-card__link">
                     <ExternalLink size={14} /> 在线访问
@@ -62,7 +55,7 @@ export default function Projects() {
                   </a>
                 ) : null}
               </div>
-            </CardWrapper>
+            </div>
           )
         })}
       </div>

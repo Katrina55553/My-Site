@@ -559,6 +559,8 @@ body {
   grid-template-columns: repeat(2, 1fr);
   max-width: 600px; margin: 0 auto 3rem;
 }
+.contact-card--span { grid-column: 1 / -1; }
+.contact-card--span .contact-card__value { font-size: 1.1rem; }
 .contact-card {
   position: relative; display: flex; align-items: center; gap: 1rem;
   padding: 1.5rem; border-radius: 18px;
@@ -593,7 +595,7 @@ body {
 }
 .contact-card__body { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .contact-card__label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem; }
-.contact-card__value { font-size: 0.95rem; color: var(--text-main); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.contact-card__value { font-size: 0.95rem; color: var(--text-main); font-weight: 600; word-break: break-all; }
 .contact-card__arrow {
   color: var(--text-muted); transition: var(--transition-smooth);
   transform: rotate(45deg); flex-shrink: 0;

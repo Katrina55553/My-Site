@@ -52,6 +52,15 @@ export const projects = [
     icon: 'sparkles',
     highlights: ['原生小程序即开即用', '早晚夜宵多场景筛选', '不吃辣等偏好过滤', '转盘动画与中奖特效'],
   },
+  {
+    name: 'Geo Explorer · 3D 地理探索地球',
+    description: '基于 Next.js 15 + React 19 + Three.js 0.184 + R3F 9 + TypeScript 5 构建的 3D 地理探索地球应用，支持 OrbitControls 拖拽旋转、表面点击选址、经纬度换算与镜头脚本运镜。',
+    tags: ['Next.js 15', 'React 19', 'Three.js', 'R3F', 'TypeScript'],
+    link: 'https://katrina55553.github.io/3D-Earth-Garden/',
+    repo: 'https://github.com/Katrina55553/3D-Earth-Garden',
+    icon: 'globe',
+    highlights: ['5px 阈值指针事件仲裁', '经纬度 ↔ 球面坐标换算', 'Haversine 最近邻匹配 25 国', 'GSAP 镜头时间轴互斥控制'],
+  },
 ]
 
 // 博客预览数据
@@ -106,11 +115,11 @@ export const resume = {
       degree: '本科',
       school: '',
       period: '2024.09 — 2028.07',
-      description: '活跃于算法竞赛领域，获 ACM-ICPC 银奖、蓝桥杯全国一等奖等荣誉。',
+      description: '活跃于算法竞赛领域，获 ACM-ICPC 银奖、CCPC 银奖、蓝桥杯全国一等奖等荣誉。',
     },
   ],
   awards: [
-    { name: '第 51 届 ACM-ICPC 国际大学生程序设计竞赛银奖', period: '2025' },
+    { name: '第 51 届 ACM-ICPC 国际大学生程序设计竞赛银奖', period: '2026' },
     { name: '2026 ACM-CCPC 中国大学生程序设计竞赛银奖', period: '2026' },
     { name: '第十七届蓝桥杯程序设计竞赛全国一等奖', period: '2026' },
     { name: 'CET-6 大学英语六级', period: '' },

@@ -45,13 +45,13 @@ function HomePage({ hue, setHue, glow, setGlow, activeSection, setActiveSection 
       </Hero>
 
       <Suspense fallback={<SectionFallback />}>
+        <Terminal />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
         <Hub />
       </Suspense>
       <Suspense fallback={<SectionFallback />}>
         <Lab hue={hue} setHue={setHue} glow={glow} setGlow={setGlow} />
-      </Suspense>
-      <Suspense fallback={<SectionFallback />}>
-        <Terminal />
       </Suspense>
     </main>
   )

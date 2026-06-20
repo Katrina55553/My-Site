@@ -2,9 +2,8 @@ import { Mail, Github, ArrowUp, MapPin, MessageCircle, Send, Globe, Phone, Arrow
 import { Link } from 'react-router-dom'
 
 const CONTACTS = [
-  { icon: Mail, label: '邮箱', value: 'ambition55553@gmail.com', href: 'mailto:ambition55553@gmail.com', color: '#ef4444' },
+  { icon: Mail, label: '邮箱', value: 'ambition55553@gmail.com', href: 'mailto:ambition55553@gmail.com', color: '#ef4444', span: true },
   { icon: Github, label: 'GitHub', value: '@Katrina55553', href: 'https://github.com/Katrina55553', color: '#a855f7' },
-  { icon: Globe, label: '个人作品集', value: 'cogod.cn', href: 'https://cogod.cn', color: '#3b82f6' },
   { icon: Phone, label: '电话', value: '13817153416', href: 'tel:13817153416', color: '#10b981' },
 ]
 
@@ -65,7 +64,7 @@ export default function Contact() {
                 href={contact.href}
                 target={contact.href.startsWith('http') ? '_blank' : undefined}
                 rel="noopener noreferrer"
-                className="contact-card"
+                className={contact.span ? 'contact-card contact-card--span' : 'contact-card'}
               >
                 <div className="contact-card__icon" style={{ '--card-color': contact.color }}>
                   <Icon size={24} />

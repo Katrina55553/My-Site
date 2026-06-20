@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { } from 'lucide-react'
 
 export default function Hero({ hue, children }) {
   return (
@@ -15,16 +15,6 @@ export default function Hero({ hue, children }) {
         <p className="hero-subtitle">
           AI 全栈开发工程师<br />从需求分析、架构设计、前后端开发到部署运维均能独立完成，已上线 10+ 个可访问产品。
         </p>
-        <div className="hero-buttons">
-          <a href="#hub" className="btn btn-primary">
-            <span>访问中转站</span>
-            <ArrowRight size={18} />
-          </a>
-          <a href="#lab" className="btn btn-secondary">
-            <span>探索实验室</span>
-            <Sparkles size={18} />
-          </a>
-        </div>
       </div>
       <div className="hero-visual">
         <div id="webgl-container">
