@@ -5,11 +5,11 @@ import { resume } from '../data/content'
 export default function Resume() {
   return (
     <section className="section" style={{ paddingTop: '8rem' }}>
+      <Link to="/" className="back-link">
+        <ArrowLeft size={18} />
+        <span>返回主页</span>
+      </Link>
       <div className="section-header">
-        <Link to="/" className="back-link">
-          <ArrowLeft size={18} />
-          <span>返回主页</span>
-        </Link>
         <h2 className="section-title">个人简历</h2>
         <p className="section-desc">我的技术背景、工作经历与教育信息。</p>
       </div>
@@ -18,7 +18,7 @@ export default function Resume() {
         {/* 左侧：个人信息 + 技能 + 教育 */}
         <div className="resume-sidebar">
           <div className="resume-card glass-card resume-profile">
-            <div className="resume-profile__avatar">刘</div>
+            <img src="/avatar.jpg" alt="头像" className="resume-profile__avatar" />
             <h3 className="resume-profile__name">{resume.name}</h3>
             <p className="resume-profile__title">{resume.title}</p>
             <p className="resume-profile__summary">{resume.summary}</p>

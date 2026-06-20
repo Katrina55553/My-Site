@@ -13,7 +13,7 @@ export default function Hero({ hue, children }) {
           <span className="gradient-text">AI 全栈未来</span>
         </h1>
         <p className="hero-subtitle">
-          刘俊威 · AI 全栈开发工程师。熟练使用 Claude Code / Cursor 高效交付产品，已上线 10+ 个可访问项目，专注 Agent 生态与工程化落地。
+          AI 全栈开发工程师<br />从需求分析、架构设计、前后端开发到部署运维均能独立完成，已上线 10+ 个可访问产品。
         </p>
         <div className="hero-buttons">
           <a href="#hub" className="btn btn-primary">
