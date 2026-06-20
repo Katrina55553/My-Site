@@ -16,7 +16,7 @@ const QUICK_INFO = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="contact-section">
+    <section className="section" style={{ paddingTop: '8rem' }}>
       <Link to="/" className="back-link">
         <ArrowLeft size={18} />
         <span>返回主页</span>
