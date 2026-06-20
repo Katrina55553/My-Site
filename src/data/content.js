@@ -109,6 +109,65 @@ export const resume = {
         '基于 JWT 实现无状态登录，用 Redis 维护 Token 黑名单，支持 user/admin/ban 三级角色',
       ],
     },
+    {
+      role: '修仙模拟器',
+      company: '前端项目 · React 19 + TypeScript 6 + Vite 8 + Tailwind CSS 4',
+      period: '个人项目',
+      description: '中文单机文字修仙 RPG，玩家从无名修士起步，通过抉择推进章节、修炼突破、结交道侣或堕入魔道，最终走向不同结局。',
+      achievements: [
+        '主线按「宗门 / 独行 / 入魔」三条路线展开，章节事件与支线事件分层调度，配合权重、冷却与互斥组机制保证每局体验有变化',
+        '状态变更、事件选择、成就判定等核心逻辑均放在 engine/ 层，不依赖 React；UI 通过单一 useGame Hook 调用，易于测试与扩展',
+        '结局、出身、先天道体、romanceBoost 等解锁内容持久化到 localStorage，鼓励重复游玩；成就奖励会作用于新局开局属性',
+        '内置 validate-game-data 数据校验脚本与 playtest 自动试玩脚本，结合 TypeScript 严格模式与 ESLint，构建前即可捕获事件引用、ID 重复等问题',
+      ],
+    },
+    {
+      role: 'Todo-App 双端待办',
+      company: '全栈项目 · Vue + Vite + Ink + Node.js',
+      period: '个人项目',
+      description: '双端 Todo 待办应用，同时提供 Web 界面（渐变毛玻璃 UI）与终端 TUI（键盘流操作），开发模式下通过本地 JSON 文件实现数据实时同步。',
+      achievements: [
+        'Web 端与 TUI 端共用同一个 todos.json，开发模式下 Vite dev server 提供 /api/todos REST 接口，TUI 直接读写文件，任意一端操作后另一端刷新即可见',
+        '存储逻辑抽象为统一的 { load, save } 接口，Web 端根据运行环境自动切换 API adapter 或 localStorage adapter，TUI 端使用 Node.js 文件系统 adapter，切换存储后端无需改动业务代码',
+        '置顶项只能在置顶区域内拖拽，非置顶项只能在非置顶区域内拖拽，跨区域移动被主动拦截，视觉上通过 drag-over 样式即时反馈',
+        'Web 端纯 CSS 手写样式（毛玻璃卡片、渐变背景、自定义 checkbox 动画），TUI 端仅依赖 Ink + React，生产构建仅含 Vue + Vite 两个 runtime',
+      ],
+    },
+    {
+      role: 'Inkwell 中文论坛',
+      company: '全栈项目 · Vue 3 + FastAPI + SQLAlchemy',
+      period: '个人项目',
+      description: '为深度交流而生的中文论坛社区，前端以暖纸色与赤陶红为主色调呈现杂志/编辑风格，后端支持 JWT 认证、嵌套评论、点赞、标签筛选、即时通知与私信。',
+      achievements: [
+        '全套 CSS 自定义属性驱动的主题：暖纸色背景 + 赤陶红主色调，深色模式一键切换；集成 Google Fonts，分页/标签/按钮均采用 pill 形设计，SVG 图标替换所有 emoji',
+        '评论支持无限嵌套递归渲染（depth < 10），置顶帖与精华帖独立标记，后台可对任意帖子执行置顶/精华操作；评论树由后端 build_comment_tree() 实时构建',
+        '登录/注册使用 bcrypt 哈希 + HS256 JWT，24 小时 token 过期；Pinia store 管理全局认证状态，navbar 每 30 秒轮询未读通知与私信计数',
+        '发帖/编辑页面左右分栏实时预览，内置 highlight.js 代码高亮 + DOMPurify XSS 过滤；后端使用 bleach 白名单过滤，支持 GFM 语法',
+      ],
+    },
+    {
+      role: '今天吃什么',
+      company: '前端项目 · 微信小程序 + Canvas',
+      period: '个人项目',
+      description: '基于微信小程序的趣味餐饮决策工具，通过转盘随机抽选菜品，支持场景化筛选和个性化偏好设置，让用户告别"今天吃什么"的选择困难症。',
+      achievements: [
+        '原生小程序即开即用，无需安装额外环境，符合微信生态用户使用习惯',
+        '早晚夜宵多场景筛选，根据用餐时段智能推荐合适的菜品类别',
+        '不吃辣等偏好过滤，结合用户口味标签精准匹配，提升决策效率',
+        'Canvas 转盘动画与中奖特效，配合音效反馈增强交互体验',
+      ],
+    },
+    {
+      role: 'Geo Explorer · 3D 地理探索地球',
+      company: '前端项目 · Next.js 15 + React 19 + Three.js 0.184 + R3F 9',
+      period: '个人项目',
+      description: '3D 地理探索地球应用，支持 OrbitControls 拖拽旋转、表面点击选址、经纬度换算与镜头脚本运镜。',
+      achievements: [
+        '设计 5px 阈值指针事件仲裁，统一 OrbitControls 拖拽与表面点击选址',
+        '实现经纬度 ↔ 球面坐标双向换算 + Haversine 最近邻匹配 25 国数据集',
+        '抽象 GSAP 镜头时间轴，通过 isAnimating ref 实现脚本运镜与用户控制互斥',
+      ],
+    },
   ],
   education: [
     {
@@ -132,8 +191,7 @@ export const terminalCommands = {
     title: '【刘俊威 // AI 全栈开发工程师】',
     lines: [
       'AI 全栈开发工程师，专注全栈开发与 Agent 生态。',
-      '技术栈：Spring Boot / FastAPI / React / Vue3 / LangGraph / Docker / Redis',
-      '已上线 10+ 个可访问产品，熟练使用 Claude Code / Cursor 等 AI 编程工具高效交付。',
+      '已上线 10+ 个可访问产品，熟练使用 Claude Code / Codex / Cursor 等 AI 编程工具高效交付。',
     ],
   },
   projects: {

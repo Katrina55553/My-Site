@@ -21,7 +21,7 @@ export default function Resume() {
 
           {/* 技能栈 */}
           <div className="resume-card glass-card">
-            <h3 className="resume-card__title">技能栈</h3>
+            <h3 className="resume-card__title">技术栈</h3>
             <div className="skills-list">
               {resume.skills.map((skill, i) => (
                 <div key={i} className="skill-category">
