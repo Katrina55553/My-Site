@@ -16,6 +16,42 @@ export const projects = [
     icon: 'terminal',
     highlights: ['DooD 6 层沙箱隔离', 'RabbitMQ 异步判题', '策略模式判题', 'Redis+Lua 限流'],
   },
+  {
+    name: '修仙模拟器',
+    description: '基于 React 19 + TypeScript 6 + Vite 8 + Tailwind CSS 4 构建的中文单机文字修仙 RPG。玩家从无名修士起步，通过抉择推进章节、修炼突破、结交道侣或堕入魔道，最终走向不同结局。纯函数式引擎驱动核心逻辑，持久化到 localStorage，支持多周目 Meta 成长。',
+    tags: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS'],
+    link: 'https://katrina55553.github.io/Cult-Game/',
+    repo: 'https://github.com/Katrina55553/Cult-Game',
+    icon: 'sparkles',
+    highlights: ['章节化多路线叙事', '纯函数游戏引擎', '跨局 Meta 与成就系统', '自动化验证 toolchain'],
+  },
+  {
+    name: 'Todo-App 双端待办',
+    description: '一款双端 Todo 待办应用，同时提供 Web 界面（渐变毛玻璃 UI）与终端 TUI（键盘流操作），开发模式下通过本地 JSON 文件实现数据实时同步。',
+    tags: ['Vue', 'Vite', 'Ink', 'Node.js'],
+    link: 'https://katrina55553.github.io/Todo-App/',
+    repo: 'https://github.com/Katrina55553/Todo-App',
+    icon: 'layout-grid',
+    highlights: ['一套数据双端体验', '可插拔存储层', '拖拽排序智能限制', '零外部 UI 依赖'],
+  },
+  {
+    name: 'Inkwell 中文论坛',
+    description: '为深度交流而生的中文论坛社区，采用 Vue 3 + FastAPI 全栈架构。前端以暖纸色与赤陶红为主色调，呈现杂志/编辑风格；后端支持 JWT 认证、嵌套评论、点赞、标签筛选、即时通知与私信。',
+    tags: ['Vue 3', 'FastAPI', 'SQLAlchemy', 'JWT'],
+    link: '#',
+    repo: 'https://github.com/Katrina55553/Forum-project',
+    icon: 'globe',
+    highlights: ['杂志风 UI 设计系统', '嵌套评论与话题精华', 'JWT 鉴权 + 通知轮询', 'Markdown 富文本编辑预览'],
+  },
+  {
+    name: '今天吃什么',
+    description: '一款基于微信小程序的趣味餐饮决策工具。通过转盘随机抽选菜品，支持场景化筛选和个性化偏好设置，让用户告别"今天吃什么"的选择困难症。',
+    tags: ['微信小程序', '原生框架', '本地存储', 'Canvas'],
+    link: 'https://katrina55553.github.io/what-to-eat-/',
+    repo: 'https://github.com/Katrina55553/what-to-eat-',
+    icon: 'sparkles',
+    highlights: ['原生小程序即开即用', '早晚夜宵多场景筛选', '不吃辣等偏好过滤', '转盘动画与中奖特效'],
+  },
 ]
 
 // 博客预览数据

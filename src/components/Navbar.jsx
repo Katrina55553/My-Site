@@ -1,18 +1,31 @@
 import { Github } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const NAV_ITEMS = [
   { id: 'hero', label: '主页', path: '/' },
-  { id: 'hub', label: '项目展示', path: '/', hash: '#hub' },
   { id: 'projects', label: '精选项目', path: '/projects' },
   { id: 'resume', label: '简历', path: '/resume' },
-  { id: 'lab', label: 'UI实验室', path: '/', hash: '#lab' },
-  { id: 'terminal-section', label: '命令终端', path: '/', hash: '#terminal-section' },
-  { id: 'contact', label: '联系我', path: '/', hash: '#contact' },
+  { id: 'lab', label: 'UI实验室', path: '/', hash: 'lab' },
+  { id: 'terminal-section', label: '命令终端', path: '/', hash: 'terminal-section' },
+  { id: 'contact', label: '联系我', path: '/', hash: 'contact' },
 ]
 
 export default function Navbar({ activeSection }) {
   const location = useLocation()
+  const navigate = useNavigate()
+
+  // 主页锚点跳转：在子页面时先回主页再滚动到锚点
+  const handleHashNav = (e, item) => {
+    if (location.pathname !== '/') {
+      e.preventDefault()
+      navigate('/')
+      // 等主页挂载后再滚动
+      setTimeout(() => {
+        const el = document.getElementById(item.hash)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }
 
   return (
     <header className="navbar">
@@ -41,6 +54,7 @@ export default function Navbar({ activeSection }) {
             <a
               key={item.id}
               href={`#${item.id}`}
+              onClick={(e) => item.hash && handleHashNav(e, item)}
               className={`nav-link ${isActive ? 'active' : ''}`}
             >
               {item.label}
@@ -50,7 +64,7 @@ export default function Navbar({ activeSection }) {
       </nav>
       <div className="nav-actions">
         <a
-          href="https://github.com/ambition55553"
+          href="https://github.com/Katrina55553"
           target="_blank"
           rel="noopener noreferrer"
           className="github-btn"
