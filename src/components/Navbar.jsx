@@ -62,11 +62,11 @@ export default function Navbar({ activeSection }) {
       </nav>
       <div className="nav-actions">
         <a
-          href="https://github.com/Katrina55553"
+          href="https://github.com/Katrina55553/My-Site"
           target="_blank"
           rel="noopener noreferrer"
           className="github-btn"
-          aria-label="GitHub Profile"
+          aria-label="GitHub Repository"
         >
           <Github size={20} />
         </a>
