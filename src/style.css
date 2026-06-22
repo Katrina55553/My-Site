@@ -78,6 +78,18 @@ body {
 @keyframes float-glow-2 { 0% { transform: translate(0,0) scale(1.1); } 100% { transform: translate(-12vw,-10vh) scale(0.9); } }
 @keyframes float-glow-3 { 0% { transform: translate(-50%,0) scale(0.9); } 100% { transform: translate(calc(-50% + 5vw),15vh) scale(1.2); } }
 
+/* 鼠标环境光晕：大面积柔光跟随鼠标 */
+.mouse-glow-container {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+}
+.mouse-glow {
+  position: absolute; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, hsla(var(--primary-hue), 85%, 60%, 0.12) 0%, transparent 65%);
+  filter: blur(20px); will-change: transform;
+}
+/* 移动端无鼠标，隐藏光晕 */
+@media (hover: none) { .mouse-glow-container { display: none; } }
+
 /* -------------------------------------------------------------
  * 4. GLASSMORPHISM UTILITIES
  * ------------------------------------------------------------- */

@@ -3,6 +3,7 @@ import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import CustomCursor from './components/CustomCursor'
+import MouseGlow from './components/MouseGlow'
 import Footer from './components/Footer'
 
 // 懒加载：Three.js 体积巨大（~600KB），分离到独立 chunk，首屏绘制后再加载
@@ -108,6 +109,7 @@ export default function App() {
       </div>
 
       <CustomCursor />
+      <MouseGlow />
       <Navbar activeSection={activeSection} />
 
       <Routes>
