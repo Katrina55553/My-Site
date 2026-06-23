@@ -1,8 +1,8 @@
-# Creative Space - 个人作品集 & UI 实验室
+# Katrina - 个人作品集
 
 > 基于 React + Vite 构建的互动个人作品集网站，集项目展示、简历、UI 实验室、科幻终端于一身。
 
-[在线预览](https://katrina55553.github.io/My-Site) · [GitHub 仓库](https://github.com/Katrina55553/My-Site)
+[在线预览](https://cogod.cn) · [GitHub 仓库](https://github.com/Katrina55553/My-Site)
 
 ---
 
@@ -85,6 +85,16 @@ my-site/
 所有展示内容（项目、简历、博客、联系方式）集中在 [src/data/content.js](src/data/content.js) 中，直接修改对应数据即可，无需深入组件代码。
 
 ## 部署
+
+### 云服务器部署
+
+项目已部署至独立域名：**https://cogod.cn**
+
+**技术栈**：Nginx + Let's Encrypt SSL + GitHub Actions 自动部署
+
+**备案信息**：浙ICP备2026045444号
+
+### 本地构建
 
 ```bash
 npm run build
