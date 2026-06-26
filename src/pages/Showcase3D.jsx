@@ -117,20 +117,54 @@ function Showcase3DScene({ hue }) {
     const ballLight = new THREE.PointLight(neonColor(hue), 3, 15)
     scene.add(ballLight)
 
+    // ---- 地面网格 ----
     const gridSize = 80
     const grid = new THREE.GridHelper(gridSize, 40, neonColor(hue), 0x1a1a2e)
     grid.position.y = -0.5
     grid.material.transparent = true
-    grid.material.opacity = 0.2
+    grid.material.opacity = 0.15
     scene.add(grid)
 
+    // 地面平面
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(gridSize, gridSize),
-      new THREE.MeshBasicMaterial({ color: 0x0a0d18, transparent: true, opacity: 0.5 })
+      new THREE.MeshBasicMaterial({ color: 0x0a0d18, transparent: true, opacity: 0.6 })
     )
     floor.rotation.x = -Math.PI / 2
     floor.position.y = -0.51
     scene.add(floor)
+
+    // 中心地面光晕 — 多层脉冲环
+    const pulseRings = []
+    for (let i = 0; i < 3; i++) {
+      const ringMesh = new THREE.Mesh(
+        new THREE.RingGeometry(3 + i * 4, 3.2 + i * 4, 64),
+        new THREE.MeshBasicMaterial({
+          color: neonColor(hue, i * 20), transparent: true, opacity: 0.3,
+          side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
+        })
+      )
+      ringMesh.rotation.x = -Math.PI / 2
+      ringMesh.position.y = -0.48
+      ringMesh.userData = { phase: i * 1.2 }
+      scene.add(ringMesh)
+      pulseRings.push(ringMesh)
+    }
+
+    // 各板块地面标记圈
+    Object.entries(ZONES).forEach(([key, zone]) => {
+      if (key === 'center') return
+      const marker = new THREE.Mesh(
+        new THREE.RingGeometry(4, 4.3, 64),
+        new THREE.MeshBasicMaterial({
+          color: neonColor(hue, 40), transparent: true, opacity: 0.2,
+          side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
+        })
+      )
+      marker.rotation.x = -Math.PI / 2
+      marker.position.set(zone.x, -0.48, zone.z)
+      scene.add(marker)
+    })
 
     const wallMat = new THREE.MeshBasicMaterial({ color: neonColor(hue), transparent: true, opacity: 0.08, side: THREE.DoubleSide })
     const wallH = 3, wallD = 35
@@ -280,25 +314,57 @@ function Showcase3DScene({ hue }) {
     })
 
     const ballRadius = 0.8
-    const ball = new THREE.Mesh(
-      new THREE.SphereGeometry(ballRadius, 32, 32),
-      new THREE.MeshBasicMaterial({ color: neonColor(hue) })
-    )
+    // 主体球组
+    const ball = new THREE.Group()
     ball.position.set(0, ballRadius, 8)
     scene.add(ball)
     ballRef.current = ball
 
-    const ballGlow = new THREE.Mesh(
-      new THREE.SphereGeometry(ballRadius * 1.4, 32, 32),
-      new THREE.MeshBasicMaterial({ color: neonColor(hue), transparent: true, opacity: 0.15 })
+    // 1. 内核 — 实心发光球
+    const coreBall = new THREE.Mesh(
+      new THREE.SphereGeometry(ballRadius * 0.55, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0xffffff })
     )
-    ball.add(ballGlow)
+    ball.add(coreBall)
 
-    const ballWire = new THREE.Mesh(
-      new THREE.SphereGeometry(ballRadius * 1.1, 16, 16),
-      new THREE.MeshBasicMaterial({ color: neonColor(hue, 40), wireframe: true, transparent: true, opacity: 0.3 })
+    // 2. 主体 — 半透明能量层
+    const mainBall = new THREE.Mesh(
+      new THREE.SphereGeometry(ballRadius, 48, 48),
+      new THREE.MeshBasicMaterial({
+        color: neonColor(hue), transparent: true, opacity: 0.35,
+        blending: THREE.AdditiveBlending,
+      })
     )
-    ball.add(ballWire)
+    ball.add(mainBall)
+
+    // 3. 旋转线框层 — 二十面体
+    const wireLayer = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(ballRadius * 1.05, 1),
+      new THREE.MeshBasicMaterial({ color: neonColor(hue, 30, 70), wireframe: true, transparent: true, opacity: 0.5 })
+    )
+    ball.add(wireLayer)
+
+    // 4. 外层光晕
+    const glowBall = new THREE.Mesh(
+      new THREE.SphereGeometry(ballRadius * 1.5, 32, 32),
+      new THREE.MeshBasicMaterial({
+        color: neonColor(hue), transparent: true, opacity: 0.08,
+        blending: THREE.AdditiveBlending, side: THREE.BackSide,
+      })
+    )
+    ball.add(glowBall)
+
+    // 5. 赤道光环
+    const ringGeo = new THREE.TorusGeometry(ballRadius * 1.3, 0.04, 8, 64)
+    const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: neonColor(hue, 20, 75), transparent: true, opacity: 0.6 }))
+    ring.rotation.x = Math.PI / 2
+    ball.add(ring)
+
+    // 第二条倾斜光环
+    const ring2 = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: neonColor(hue, 60, 70), transparent: true, opacity: 0.4 }))
+    ring2.rotation.x = Math.PI / 3
+    ring2.rotation.z = Math.PI / 4
+    ball.add(ring2)
 
     const TRAIL_COUNT = 50
     const trailPositions = new Float32Array(TRAIL_COUNT * 3)
@@ -320,29 +386,65 @@ function Showcase3DScene({ hue }) {
     scene.add(trail)
     let trailIndex = 0
 
-    const bgCount = 800
+    // ---- 背景粒子（闪烁星尘） ----
+    const bgCount = 1200
     const bgPos = new Float32Array(bgCount * 3)
     const bgCol = new Float32Array(bgCount * 3)
+    const bgPhase = new Float32Array(bgCount)
     const c1 = neonColor(hue)
     const c2 = neonColor(hue, 60, 60)
+    const c3 = new THREE.Color(0xffffff)
     for (let i = 0; i < bgCount; i++) {
-      const r = 20 + Math.random() * 30
+      const r = 20 + Math.random() * 35
       const theta = Math.random() * Math.PI * 2
       const phi = Math.acos(2 * Math.random() - 1)
       bgPos[i * 3] = r * Math.sin(phi) * Math.cos(theta)
       bgPos[i * 3 + 1] = r * Math.abs(Math.sin(phi) * Math.sin(theta))
       bgPos[i * 3 + 2] = r * Math.cos(phi)
-      const mixed = c1.clone().lerp(c2, Math.random())
+      // 30% 白色亮星 + 70% 霓虹色
+      const mixed = Math.random() < 0.3 ? c3.clone() : c1.clone().lerp(c2, Math.random())
       bgCol[i * 3] = mixed.r
       bgCol[i * 3 + 1] = mixed.g
       bgCol[i * 3 + 2] = mixed.b
+      bgPhase[i] = Math.random() * Math.PI * 2
     }
     const bgGeo = new THREE.BufferGeometry()
     bgGeo.setAttribute('position', new THREE.BufferAttribute(bgPos, 3))
     bgGeo.setAttribute('color', new THREE.BufferAttribute(bgCol, 3))
-    const bgMat = new THREE.PointsMaterial({ size: 0.08, vertexColors: true, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending })
+    const bgMat = new THREE.PointsMaterial({ size: 0.1, vertexColors: true, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending })
     const bgParticles = new THREE.Points(bgGeo, bgMat)
     scene.add(bgParticles)
+
+    // ---- 星穹顶（高处密集星点） ----
+    const starCount = 600
+    const starPos = new Float32Array(starCount * 3)
+    for (let i = 0; i < starCount; i++) {
+      const r = 30 + Math.random() * 20
+      const theta = Math.random() * Math.PI * 2
+      starPos[i * 3] = r * Math.cos(theta)
+      starPos[i * 3 + 1] = 15 + Math.random() * 25
+      starPos[i * 3 + 2] = r * Math.sin(theta)
+    }
+    const starGeo = new THREE.BufferGeometry()
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3))
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.12, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending })
+    const starDome = new THREE.Points(starGeo, starMat)
+    scene.add(starDome)
+
+    // ---- 星云雾团（大型半透明球） ----
+    const nebulae = []
+    for (let i = 0; i < 5; i++) {
+      const nebMat = new THREE.MeshBasicMaterial({
+        color: neonColor(hue, i * 50, 50), transparent: true, opacity: 0.03,
+        blending: THREE.AdditiveBlending, side: THREE.BackSide,
+      })
+      const neb = new THREE.Mesh(new THREE.SphereGeometry(8 + Math.random() * 6, 16, 16), nebMat)
+      const angle = (i / 5) * Math.PI * 2
+      neb.position.set(Math.cos(angle) * 25, 8 + Math.random() * 8, Math.sin(angle) * 25)
+      neb.userData = { floatOffset: i * 1.5, baseY: neb.position.y }
+      scene.add(neb)
+      nebulae.push(neb)
+    }
 
     const keys = keysRef.current
     const onKeyDown = (e) => {
@@ -441,6 +543,15 @@ function Showcase3DScene({ hue }) {
       ball.rotation.x += velocity.z * 0.5
       ball.position.y = ballRadius + Math.abs(Math.sin(t * 3)) * 0.1
 
+      // 球体内部动画
+      const speed2 = Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z)
+      coreBall.scale.setScalar(1 + Math.sin(t * 4) * 0.08 + speed2 * 0.5)
+      wireLayer.rotation.y = t * 0.8
+      wireLayer.rotation.x = t * 0.5
+      ring.rotation.z = t * 0.6
+      ring2.rotation.y = t * 0.9
+      glowBall.scale.setScalar(1 + Math.sin(t * 2) * 0.05)
+
       ballLight.position.copy(ball.position)
       ballLight.position.y += 2
 
@@ -475,6 +586,25 @@ function Showcase3DScene({ hue }) {
         sp.position.y = sp.userData.baseY + Math.sin(t + sp.userData.floatOffset) * 0.15
       })
       bgParticles.rotation.y = t * 0.01
+
+      // 脉冲环
+      pulseRings.forEach(r => {
+        const p = (t + r.userData.phase) * 0.5
+        r.material.opacity = 0.15 + Math.abs(Math.sin(p)) * 0.25
+        r.scale.setScalar(1 + Math.sin(p) * 0.05)
+      })
+
+      // 星云浮动
+      nebulae.forEach(neb => {
+        neb.position.y = neb.userData.baseY + Math.sin(t * 0.3 + neb.userData.floatOffset) * 2
+        neb.rotation.y = t * 0.02
+      })
+
+      // 星穹缓慢旋转
+      starDome.rotation.y = t * 0.005
+
+      // 背景粒子闪烁
+      bgMat.opacity = 0.4 + Math.sin(t * 1.5) * 0.2
 
       renderer.render(scene, camera)
       animationRef.current = requestAnimationFrame(animate)
