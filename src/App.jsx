@@ -16,6 +16,7 @@ const Contact = lazy(() => import('./components/Contact'))
 // 独立页面
 const Projects = lazy(() => import('./pages/Projects'))
 const ResumePage = lazy(() => import('./pages/Resume'))
+const Showcase3D = lazy(() => import('./pages/Showcase3D'))
 
 // 简易加载占位：保持布局高度，避免 CLS
 function SectionFallback({ minHeight = '60vh' }) {
@@ -154,6 +155,14 @@ export default function App() {
                 <Contact />
               </Suspense>
             </SubPage>
+          }
+        />
+        <Route
+          path="/showcase"
+          element={
+            <Suspense fallback={<SectionFallback minHeight="100vh" />}>
+              <Showcase3D />
+            </Suspense>
           }
         />
         {/* 兜底：未匹配路由重定向到首页 */}

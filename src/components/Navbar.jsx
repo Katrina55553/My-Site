@@ -5,6 +5,7 @@ const NAV_ITEMS = [
   { id: 'hero', label: '主页', path: '/' },
   { id: 'projects', label: '我的项目', path: '/projects' },
   { id: 'resume', label: '个人简历', path: '/resume' },
+  { id: 'showcase', label: '3D 展示', path: '/showcase' },
   { id: 'contact', label: '联系我', path: '/contact' },
 ]
 
