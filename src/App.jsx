@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense, Component } from 'react'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -6,17 +6,29 @@ import CustomCursor from './components/CustomCursor'
 import MouseGlow from './components/MouseGlow'
 import Footer from './components/Footer'
 
+// chunk 加载失败时自动刷新（部署后旧 chunk 文件名失效）
+function lazyWithRetry(fn) {
+  return lazy(() =>
+    fn().catch((err) => {
+      if (err.message.includes('Failed to fetch dynamically imported module') && !location.search.includes('retry')) {
+        location.replace(location.pathname + location.hash + '?retry=1')
+      }
+      throw err
+    })
+  )
+}
+
 // 懒加载：Three.js 体积巨大（~600KB），分离到独立 chunk，首屏绘制后再加载
-const ParticleScene = lazy(() => import('./components/ParticleScene'))
+const ParticleScene = lazyWithRetry(() => import('./components/ParticleScene'))
 // below-the-fold 组件懒加载，进一步减小首屏 JS 体积
-const Hub = lazy(() => import('./components/Hub'))
-const Lab = lazy(() => import('./components/Lab'))
-const Terminal = lazy(() => import('./components/Terminal'))
-const Contact = lazy(() => import('./components/Contact'))
+const Hub = lazyWithRetry(() => import('./components/Hub'))
+const Lab = lazyWithRetry(() => import('./components/Lab'))
+const Terminal = lazyWithRetry(() => import('./components/Terminal'))
+const Contact = lazyWithRetry(() => import('./components/Contact'))
 // 独立页面
-const Projects = lazy(() => import('./pages/Projects'))
-const ResumePage = lazy(() => import('./pages/Resume'))
-const Showcase3D = lazy(() => import('./pages/Showcase3D'))
+const Projects = lazyWithRetry(() => import('./pages/Projects'))
+const ResumePage = lazyWithRetry(() => import('./pages/Resume'))
+const Showcase3D = lazyWithRetry(() => import('./pages/Showcase3D'))
 
 // 空闲预取：主页加载后浏览器空闲时提前下载子页面 chunk
 function usePrefetchRoutes() {
