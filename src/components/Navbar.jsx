@@ -9,6 +9,21 @@ const NAV_ITEMS = [
   { id: 'contact', label: '联系我', path: '/contact' },
 ]
 
+// hover 预取：鼠标悬停时提前加载对应页面 chunk
+const PREFETCH_MAP = {
+  '/projects': () => import('../pages/Projects'),
+  '/resume': () => import('../pages/Resume'),
+  '/showcase': () => import('../pages/Showcase3D'),
+  '/contact': () => import('./Contact'),
+}
+const prefetched = new Set()
+function prefetchRoute(path) {
+  if (PREFETCH_MAP[path] && !prefetched.has(path)) {
+    prefetched.add(path)
+    PREFETCH_MAP[path]()
+  }
+}
+
 export default function Navbar({ activeSection }) {
   const location = useLocation()
   const navigate = useNavigate()
@@ -41,6 +56,7 @@ export default function Navbar({ activeSection }) {
               <Link
                 key={item.id}
                 to={item.path}
+                onMouseEnter={() => prefetchRoute(item.path)}
                 className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
               >
                 {item.label}

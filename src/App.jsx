@@ -18,6 +18,25 @@ const Projects = lazy(() => import('./pages/Projects'))
 const ResumePage = lazy(() => import('./pages/Resume'))
 const Showcase3D = lazy(() => import('./pages/Showcase3D'))
 
+// 空闲预取：主页加载后浏览器空闲时提前下载子页面 chunk
+function usePrefetchRoutes() {
+  useEffect(() => {
+    const prefetch = () => {
+      import('./pages/Projects')
+      import('./pages/Resume')
+      import('./pages/Showcase3D')
+      import('./components/Contact')
+    }
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(prefetch, { timeout: 3000 })
+      return () => window.cancelIdleCallback(id)
+    } else {
+      const timer = setTimeout(prefetch, 1500)
+      return () => clearTimeout(timer)
+    }
+  }, [])
+}
+
 // 简易加载占位：保持布局高度，避免 CLS
 function SectionFallback({ minHeight = '60vh' }) {
   return (
@@ -69,6 +88,7 @@ export default function App() {
   const [glow, setGlow] = useState(100)
   const [activeSection, setActiveSection] = useState('hero')
   const location = useLocation()
+  usePrefetchRoutes()
 
   // 主题变化时更新 CSS 变量
   useEffect(() => {
