@@ -63,6 +63,21 @@ export const projects = [
     icon: 'globe',
     highlights: ['5px 阈值指针事件仲裁', '经纬度 ↔ 球面坐标换算', 'Haversine 最近邻匹配 25 国', 'GSAP 镜头时间轴互斥控制'],
   },
+  {
+    name: "Katrina's Blog",
+    description: '基于 Astro v5 构建的个人静态博客系统，采用 TypeScript 与 Tailwind CSS v4 技术栈。文章以 Markdown 形式通过 Content Collections 进行类型化管理，原生支持标签系统、Shiki 代码高亮、Mermaid 流程图、LaTeX 公式、客户端全文搜索与 Umami 访问统计。整体设计强调 Static-First 与零 JavaScript 默认理念，配合 Docker 多阶段镜像与 Nginx 反向代理，由 GitHub Actions 完成自动化部署。',
+    tags: ['Astro v5', 'TypeScript', 'Tailwind CSS v4', 'Docker', 'Nginx'],
+    link: 'http://121.43.63.231',
+    repo: 'https://github.com/Katrina55553/My-Blog',
+    icon: 'globe',
+    highlights: [
+      'Content Collections + Zod Schema 构建期类型校验',
+      'remark-math → rehype-katex LaTeX 渲染管线',
+      '零依赖客户端全文搜索（构建期序列化索引）',
+      'Nginx 分层缓存策略（immutable / no-cache 差异化）',
+      'Docker 多阶段构建 + GitHub Actions 自动部署',
+    ],
+  },
 ]
 
 // 博客预览数据
@@ -168,6 +183,19 @@ export const resume = {
         '设计 5px 阈值指针事件仲裁，统一 OrbitControls 拖拽与表面点击选址',
         '实现经纬度 ↔ 球面坐标双向换算 + Haversine 最近邻匹配 25 国数据集',
         '抽象 GSAP 镜头时间轴，通过 isAnimating ref 实现脚本运镜与用户控制互斥',
+      ],
+    },
+    {
+      role: "Katrina's Blog",
+      company: '前端项目 · Astro v5 + TypeScript + Tailwind CSS v4',
+      period: '个人项目',
+      description: '基于 Astro v5 构建的个人静态博客系统，采用 TypeScript 与 Tailwind CSS v4 技术栈。文章以 Markdown 形式通过 Content Collections 进行类型化管理，原生支持标签系统、Shiki 代码高亮、Mermaid 流程图、LaTeX 公式、客户端全文搜索与 Umami 访问统计。',
+      achievements: [
+        'Content Collections + Zod Schema 实现文章 Frontmatter 构建期类型校验，字段缺失或类型错误直接报错',
+        '串联 remark-math → rehype-katex 渲染 LaTeX 公式，rehype-slug 生成标题锚点，Shiki 代码高亮 + 自动换行',
+        '零依赖客户端全文搜索：构建期序列化文章索引为 JSON，前端内存实时模糊匹配标题、标签、描述',
+        'Nginx 分层缓存策略：/_astro/* 设为 1y immutable，HTML 设为 no-cache，兼顾性能与更新即时性',
+        'Docker 多阶段构建（node:22-alpine 构建 → nginx:alpine 运行），GitHub Actions 自动化部署',
       ],
     },
   ],
