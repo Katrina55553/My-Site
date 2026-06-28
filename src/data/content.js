@@ -65,17 +65,15 @@ export const projects = [
   },
   {
     name: "Katrina's Blog",
-    description: '基于 Astro v5 构建的个人静态博客系统，采用 TypeScript 与 Tailwind CSS v4 技术栈。文章以 Markdown 形式通过 Content Collections 进行类型化管理，原生支持标签系统、Shiki 代码高亮、Mermaid 流程图、LaTeX 公式、客户端全文搜索与 Umami 访问统计。整体设计强调 Static-First 与零 JavaScript 默认理念，配合 Docker 多阶段镜像与 Nginx 反向代理，由 GitHub Actions 完成自动化部署。',
+    description: '基于 Astro v5 + TypeScript + Tailwind CSS v4 构建的个人静态博客，支持 Markdown 内容管理、Shiki 代码高亮、LaTeX 公式、客户端全文搜索，配合 Docker + Nginx 由 GitHub Actions 自动部署。',
     tags: ['Astro v5', 'TypeScript', 'Tailwind CSS v4', 'Docker', 'Nginx'],
     link: 'http://121.43.63.231',
     repo: 'https://github.com/Katrina55553/My-Blog',
     icon: 'globe',
     highlights: [
-      'Content Collections + Zod Schema 构建期类型校验',
-      'remark-math → rehype-katex LaTeX 渲染管线',
-      '零依赖客户端全文搜索（构建期序列化索引）',
-      'Nginx 分层缓存策略（immutable / no-cache 差异化）',
-      'Docker 多阶段构建 + GitHub Actions 自动部署',
+      'Content Collections + Zod 构建期类型校验',
+      '零依赖客户端全文搜索',
+      'Nginx 分层缓存 + Docker 多阶段构建',
     ],
   },
 ]
