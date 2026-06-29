@@ -70,13 +70,23 @@ export default function Terminal() {
         break
       }
       case 'blog': {
-        appendLine('正在检索最新的博客文章...', 'system')
-        setTimeout(() => {
-          appendLine('最新文章推荐：', 'success')
-          blogPosts.forEach((b, i) => {
-            appendLine(`  [${i + 1}] <a href="#" style="color: var(--neon-primary)">${b.title}</a> (${b.tag})`)
+        appendLine('正在从博客站点拉取最新文章...', 'system')
+        fetch('http://121.43.63.231/search.json')
+          .then((res) => res.json())
+          .then((data) => {
+            appendLine(`最新文章（共 ${data.length} 篇）：`, 'success')
+            data.slice(0, 8).forEach((b, i) => {
+              const tags = Array.isArray(b.tags) ? b.tags.join(', ') : (b.tags || '')
+              appendLine(`  [${i + 1}] <a href="http://121.43.63.231/posts/${b.slug}" target="_blank" style="color: var(--neon-primary)">${b.title}</a>${tags ? ` (${tags})` : ''}`)
+            })
+            appendLine(`  <a href="http://121.43.63.231" target="_blank" style="color: var(--neon-primary)">查看全部文章 →</a>`)
           })
-        }, 600)
+          .catch(() => {
+            appendLine('博客站点暂时无法连接，显示本地缓存：', 'error')
+            blogPosts.forEach((b, i) => {
+              appendLine(`  [${i + 1}] <a href="http://121.43.63.231" target="_blank" style="color: var(--neon-primary)">${b.title}</a> (${b.tag})`)
+            })
+          })
         break
       }
       case 'projects': {
@@ -96,7 +106,6 @@ export default function Terminal() {
         const logo = `   /\\_/\\  \n  ( o.o ) \n   > ^ <  \n  KATRINA`
         const info = `<span class="cmd-highlight">OS</span>: Creative Terminal OS v1.0.0
 <span class="cmd-highlight">Host</span>: Web-Environment
-<span class="cmd-highlight">Kernel</span>: Gemini-Core-3.5
 <span class="cmd-highlight">Uptime</span>: 2026 days
 <span class="cmd-highlight">Shell</span>: Katrina-Zsh
 <span class="cmd-highlight">Resolution</span>: ${window.innerWidth}x${window.innerHeight}
