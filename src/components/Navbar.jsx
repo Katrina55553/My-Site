@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 const NAV_ITEMS = [
   { id: 'hero', label: '主页', path: '/' },
   { id: 'projects', label: '我的项目', path: '/projects' },
+  { id: 'blog', label: '我的博客', external: 'http://121.43.63.231/' },
   { id: 'resume', label: '个人简历', path: '/resume' },
   { id: 'showcase', label: '3D 展示', path: '/showcase' },
   { id: 'contact', label: '联系我', path: '/contact' },
@@ -50,6 +51,20 @@ export default function Navbar({ activeSection }) {
       </Link>
       <nav className="nav-links">
         {NAV_ITEMS.map((item) => {
+          // 外部链接项
+          if (item.external) {
+            return (
+              <a
+                key={item.id}
+                href={item.external}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link"
+              >
+                {item.label}
+              </a>
+            )
+          }
           // 子页面路由项
           if (item.path !== '/') {
             return (

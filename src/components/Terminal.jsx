@@ -70,23 +70,10 @@ export default function Terminal() {
         break
       }
       case 'blog': {
-        appendLine('正在从博客站点拉取最新文章...', 'system')
-        fetch('http://121.43.63.231/search.json')
-          .then((res) => res.json())
-          .then((data) => {
-            appendLine(`最新文章（共 ${data.length} 篇）：`, 'success')
-            data.slice(0, 8).forEach((b, i) => {
-              const tags = Array.isArray(b.tags) ? b.tags.join(', ') : (b.tags || '')
-              appendLine(`  [${i + 1}] <a href="http://121.43.63.231/posts/${b.slug}" target="_blank" style="color: var(--neon-primary)">${b.title}</a>${tags ? ` (${tags})` : ''}`)
-            })
-            appendLine(`  <a href="http://121.43.63.231" target="_blank" style="color: var(--neon-primary)">查看全部文章 →</a>`)
-          })
-          .catch(() => {
-            appendLine('博客站点暂时无法连接，显示本地缓存：', 'error')
-            blogPosts.forEach((b, i) => {
-              appendLine(`  [${i + 1}] <a href="http://121.43.63.231" target="_blank" style="color: var(--neon-primary)">${b.title}</a> (${b.tag})`)
-            })
-          })
+        appendLine('正在跳转到博客站点...', 'system')
+        setTimeout(() => {
+          window.open('http://121.43.63.231/', '_blank', 'noopener,noreferrer')
+        }, 500)
         break
       }
       case 'projects': {
