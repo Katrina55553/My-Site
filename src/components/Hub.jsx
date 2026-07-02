@@ -46,7 +46,7 @@ export default function Hub() {
 
         {/* 个人博客 */}
         <TiltCard>
-          <a href="http://121.43.63.231/" target="_blank" rel="noopener noreferrer" className="card-content card-content--link">
+          <a href="https://blog.cogod.cn/" target="_blank" rel="noopener noreferrer" className="card-content card-content--link">
             <div className="card-glow"></div>
             <div className="card-header-icon">
               <BookOpen size={28} />

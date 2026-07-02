@@ -67,7 +67,7 @@ export const projects = [
     name: "Katrina's Blog",
     description: '基于 Astro v5 + TypeScript + Tailwind CSS v4 构建的个人静态博客，支持 Markdown 内容管理、Shiki 代码高亮、LaTeX 公式、客户端全文搜索，配合 Docker + Nginx 由 GitHub Actions 自动部署。',
     tags: ['Astro v5', 'TypeScript', 'Tailwind CSS v4', 'Docker', 'Nginx'],
-    link: 'http://121.43.63.231',
+    link: 'https://blog.cogod.cn',
     repo: 'https://github.com/Katrina55553/My-Blog',
     icon: 'globe',
     highlights: [

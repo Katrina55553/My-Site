@@ -72,7 +72,7 @@ export default function Terminal() {
       case 'blog': {
         appendLine('正在跳转到博客站点...', 'system')
         setTimeout(() => {
-          window.open('http://121.43.63.231/', '_blank', 'noopener,noreferrer')
+          window.open('https://blog.cogod.cn/', '_blank', 'noopener,noreferrer')
         }, 500)
         break
       }

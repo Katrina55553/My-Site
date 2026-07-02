@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 const NAV_ITEMS = [
   { id: 'hero', label: '主页', path: '/' },
   { id: 'projects', label: '我的项目', path: '/projects' },
-  { id: 'blog', label: '我的博客', external: 'http://121.43.63.231/' },
+  { id: 'blog', label: '我的博客', external: 'https://blog.cogod.cn/' },
   { id: 'resume', label: '个人简历', path: '/resume' },
   { id: 'showcase', label: '3D 展示', path: '/showcase' },
   { id: 'contact', label: '联系我', path: '/contact' },
