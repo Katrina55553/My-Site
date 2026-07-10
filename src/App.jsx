@@ -141,6 +141,9 @@ export default function App() {
         <div className="glow-orb orb-3"></div>
       </div>
 
+      {/* 电影颗粒质感叠加层 */}
+      <div className="grain-overlay" aria-hidden="true"></div>
+
       <CustomCursor />
       <MouseGlow />
       <Navbar activeSection={activeSection} />

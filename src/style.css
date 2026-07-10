@@ -20,8 +20,8 @@
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
 
-  --font-heading: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
-  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-heading: 'Chakra Petch', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+  --font-body: 'Manrope', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
 
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -89,6 +89,34 @@ body {
 }
 /* 移动端无鼠标，隐藏光晕 */
 @media (hover: none) { .mouse-glow-container { display: none; } }
+
+/* 电影颗粒质感：SVG feTurbulence 生成噪点，叠加全站营造氛围深度 */
+.grain-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 99990; pointer-events: none; opacity: 0.045;
+  mix-blend-mode: overlay; will-change: transform;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 240px 240px;
+  animation: grain-shift 8s steps(10) infinite;
+}
+/* 颗粒缓慢抖动，模拟胶片噪点的呼吸感 */
+@keyframes grain-shift {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-5%, -5%); }
+  20%  { transform: translate(-10%, 5%); }
+  30%  { transform: translate(5%, -10%); }
+  40%  { transform: translate(-5%, 15%); }
+  50%  { transform: translate(-10%, 5%); }
+  60%  { transform: translate(15%, 0); }
+  70%  { transform: translate(0, 10%); }
+  80%  { transform: translate(-15%, 0); }
+  90%  { transform: translate(10%, 5%); }
+  100% { transform: translate(0, 0); }
+}
+/* 尊重无障碍：减少动画时关闭颗粒抖动 */
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay { animation: none; }
+}
 
 /* -------------------------------------------------------------
  * 4. GLASSMORPHISM UTILITIES
@@ -524,7 +552,7 @@ body {
 .action-dot.red { background-color: #ef4444; }
 .action-dot.yellow { background-color: #f59e0b; }
 .action-dot.green { background-color: #10b981; }
-.terminal-title { font-family: 'Space Grotesk', monospace; font-size: 0.85rem; color: var(--text-secondary); }
+.terminal-title { font-family: var(--font-heading); font-size: 0.85rem; color: var(--text-secondary); letter-spacing: 0.5px; }
 .terminal-info-badge { font-size: 0.75rem; font-weight: 600; color: var(--neon-primary); background: var(--neon-primary-glow); padding: 0.25rem 0.75rem; border-radius: 4px; border: 1px solid hsla(var(--primary-hue),85%,65%,0.3); font-family: var(--font-heading); letter-spacing: 0.5px; }
 .terminal-body { flex: 1; padding: 1.5rem; overflow-y: auto; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.9rem; line-height: 1.6; display: flex; flex-direction: column; gap: 0.5rem; }
 .terminal-line { color: var(--text-secondary); white-space: pre-wrap; word-break: break-all; }
