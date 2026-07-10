@@ -571,10 +571,140 @@ body {
 /* -------------------------------------------------------------
  * 12. FOOTER
  * ------------------------------------------------------------- */
-.footer { border-top: 1px solid var(--border-color); padding: 2.5rem 0; text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 0; }
-.footer-icp { margin-top: 0.8rem; font-size: 0.8rem; }
-.footer-icp a { color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; }
-.footer-icp a:hover { color: var(--neon-primary); text-decoration: underline; }
+.footer {
+  position: relative;
+  margin-top: 0;
+  padding: 0;
+  overflow: hidden;
+}
+/* 顶部渐变发光分隔线：呼应霓虹主题 */
+.footer-divider {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--neon-primary) 20%,
+    var(--neon-secondary) 50%,
+    var(--neon-primary) 80%,
+    transparent 100%);
+  opacity: 0.5;
+  box-shadow: 0 0 12px var(--neon-primary-glow);
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 3rem 3rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.2fr;
+  gap: 3.5rem;
+}
+
+/* 左侧品牌区 */
+.footer-brand { display: flex; flex-direction: column; gap: 1.2rem; }
+.footer-logo {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 1.4rem; letter-spacing: 1.5px;
+  text-decoration: none;
+}
+.footer-tagline {
+  font-size: 0.9rem; color: var(--text-secondary);
+  line-height: 1.7; max-width: 320px;
+}
+.footer-status {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  align-self: flex-start;
+  padding: 0.45rem 1rem; border-radius: 100px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  font-size: 0.78rem; font-weight: 600; color: #10b981;
+  letter-spacing: 0.3px;
+}
+.footer-status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: footer-pulse 2s ease-in-out infinite;
+}
+@keyframes footer-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* 区块标题 */
+.footer-heading {
+  font-family: var(--font-heading);
+  font-size: 0.78rem; font-weight: 700;
+  color: var(--neon-primary);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+  position: relative; padding-bottom: 0.8rem;
+}
+.footer-heading::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 24px; height: 2px;
+  background: var(--neon-primary);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--neon-primary-glow);
+}
+
+/* 中间导航 */
+.footer-nav-list, .footer-social-list {
+  list-style: none; display: flex; flex-direction: column; gap: 0.85rem;
+}
+.footer-nav-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 0.92rem; font-weight: 500;
+  transition: var(--transition-smooth);
+}
+.footer-nav-link:hover { color: var(--neon-primary); transform: translateX(4px); }
+.footer-nav-arrow {
+  opacity: 0; transform: translate(-2px, 2px);
+  transition: var(--transition-smooth);
+}
+.footer-nav-link:hover .footer-nav-arrow { opacity: 1; transform: translate(0, 0); }
+
+/* 右侧社交 */
+.footer-social-link {
+  display: flex; align-items: center; gap: 0.85rem;
+  color: var(--text-secondary); text-decoration: none;
+  transition: var(--transition-smooth);
+}
+.footer-social-link:hover { color: var(--text-main); transform: translateX(4px); }
+.footer-social-icon {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-color);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--neon-primary);
+  transition: var(--transition-smooth); flex-shrink: 0;
+}
+.footer-social-link:hover .footer-social-icon {
+  background: var(--neon-primary); color: #fff;
+  border-color: var(--neon-primary);
+  box-shadow: 0 0 12px var(--neon-primary-glow);
+}
+.footer-social-text { display: flex; flex-direction: column; gap: 0.1rem; }
+.footer-social-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.footer-social-value { font-size: 0.88rem; color: inherit; font-weight: 500; }
+
+/* 底部版权条 */
+.footer-bottom {
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 0.8rem;
+  max-width: 1200px; margin: 0 auto;
+}
+.footer-copy { font-size: 0.85rem; color: var(--text-muted); }
+.footer-icp { font-size: 0.8rem; }
+.footer-icp a {
+  color: var(--text-muted); text-decoration: none;
+  transition: color 0.3s ease;
+  border-bottom: 1px dashed transparent;
+  padding-bottom: 1px;
+}
+.footer-icp a:hover { color: var(--neon-primary); border-bottom-color: var(--neon-primary); }
 
 /* -------------------------------------------------------------
  * 12.5 CONTACT SECTION (整屏收尾页)
@@ -821,6 +951,9 @@ body {
   .contact-section { padding: 6rem 1.5rem 3rem; }
   .contact-title { font-size: 2rem; }
   .contact-quick-info { flex-direction: column; align-items: stretch; }
+  /* Footer 移动端：单列堆叠 */
+  .footer-inner { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem 2rem; }
+  .footer-bottom { flex-direction: column; text-align: center; padding: 1.5rem 1.5rem; }
 }
 
 /* -------------------------------------------------------------
