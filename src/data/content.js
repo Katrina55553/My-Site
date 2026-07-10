@@ -76,6 +76,15 @@ export const projects = [
       'Nginx 分层缓存 + Docker 多阶段构建',
     ],
   },
+  {
+    name: 'CatDown 下班倒计时',
+    description: '常驻系统托盘的 Windows 桌面下班倒计时小部件，实时显示距离下班的时间并估算今日收入，支持跨夜/跨周末/节假日自动处理、字体渐变、背景图片裁剪等视觉自定义。',
+    tags: ['Electron 33', 'Vue 3.5', 'TypeScript', 'Pinia', 'electron-vite'],
+    link: '#',
+    repo: 'https://github.com/Katrina55553/CatDown',
+    icon: 'clock',
+    highlights: ['70 个单元测试的纯函数引擎', '法定节假日自动处理', '月薪/日薪实时收入估算', '字体渐变编辑器 + 图片裁剪'],
+  },
 ]
 
 // 博客预览数据
@@ -194,6 +203,19 @@ export const resume = {
         '零依赖客户端全文搜索：构建期序列化文章索引为 JSON，前端内存实时模糊匹配标题、标签、描述',
         'Nginx 分层缓存策略：/_astro/* 设为 1y immutable，HTML 设为 no-cache，兼顾性能与更新即时性',
         'Docker 多阶段构建（node:22-alpine 构建 → nginx:alpine 运行），GitHub Actions 自动化部署',
+      ],
+    },
+    {
+      role: 'CatDown 下班倒计时',
+      company: '桌面应用 · Electron 33 + Vue 3.5 + TypeScript',
+      period: '个人项目',
+      description: '常驻系统托盘的 Windows 桌面下班倒计时小部件，实时显示距离下班的时间并估算今日收入，支持跨夜/跨周末/节假日自动处理、字体渐变、背景图片裁剪等视觉自定义。',
+      achievements: [
+        '纯函数引擎层（shared/）不依赖 Electron API，70 个单元测试覆盖跨夜、跨周末、节假日等边界场景',
+        '内置中国大陆法定节假日（2025–2027），节假日视为非工作日影响倒计时与发薪日提前计算',
+        '月薪/日薪实时收入估算，发薪日遇节假日自动提前到最近工作日',
+        '字体渐变编辑器（线性/径向、角度滑块、色标增删改）+ cropperjs 图片裁剪 + 极简模式',
+        'electron-vite + electron-builder NSIS 打包，支持开机自启与配置本地持久化',
       ],
     },
   ],
