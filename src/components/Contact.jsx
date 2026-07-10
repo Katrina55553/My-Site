@@ -21,7 +21,7 @@ export default function Contact() {
         <span>返回主页</span>
       </Link>
       <div className="contact-inner">
-        <div className="contact-header">
+        <div className="contact-header reveal">
           <span className="contact-badge">
             <span className="pulse-dot"></span>
             <span>LET'S CONNECT</span>
@@ -37,7 +37,7 @@ export default function Contact() {
         </div>
 
         {/* 快速信息条 */}
-        <div className="contact-quick-info">
+        <div className="contact-quick-info reveal-stagger">
           {QUICK_INFO.map((info, i) => {
             const Icon = info.icon
             return (
@@ -55,7 +55,7 @@ export default function Contact() {
         </div>
 
         {/* 联系方式卡片网格 */}
-        <div className="contact-cards contact-cards--compact">
+        <div className="contact-cards contact-cards--compact reveal-stagger">
           {CONTACTS.map((contact, i) => {
             const Icon = contact.icon
             return (

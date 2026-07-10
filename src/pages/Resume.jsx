@@ -9,12 +9,12 @@ export default function Resume() {
         <ArrowLeft size={18} />
         <span>返回主页</span>
       </Link>
-      <div className="section-header">
+      <div className="section-header reveal">
         <h2 className="section-title">个人简历</h2>
         <p className="section-desc">我的技术背景、工作经历与教育信息。</p>
       </div>
 
-      <div className="resume-grid">
+      <div className="resume-grid reveal-stagger">
         {/* 左侧：个人信息 + 技能 + 教育 */}
         <div className="resume-sidebar">
           <div className="resume-card glass-card resume-profile">

@@ -743,6 +743,59 @@ body {
 .back-to-top:hover svg { transform: translateY(-3px); }
 
 /* -------------------------------------------------------------
+ * 12.8 SCROLL REVEAL & STAGGERED ENTRANCE
+ * ------------------------------------------------------------- */
+/* 基础渐入：滚动进入视口时触发 */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 子元素错落入场：父级 .reveal-stagger 进入视口后，子元素按序 delay 显现 */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  will-change: opacity, transform;
+}
+.reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.15s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.25s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.35s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.45s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.55s; }
+.reveal-stagger.is-visible > *:nth-child(7) { transition-delay: 0.65s; }
+.reveal-stagger.is-visible > *:nth-child(8) { transition-delay: 0.75s; }
+.reveal-stagger.is-visible > *:nth-child(9) { transition-delay: 0.85s; }
+
+/* Hero 首屏编排：页面加载即触发，不等滚动（badge → title → visual 依次浮现） */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-section .badge-container { animation: hero-rise 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s both; }
+.hero-section .hero-title      { animation: hero-rise 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s both; }
+.hero-section .hero-visual     { animation: hero-rise 1s   cubic-bezier(0.16,1,0.3,1) 0.5s both; }
+
+/* 无障碍：尊重用户减少动画的系统设置 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-stagger > *,
+  .hero-section .badge-container, .hero-section .hero-title, .hero-section .hero-visual {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* -------------------------------------------------------------
  * 13. RESPONSIVENESS
  * ------------------------------------------------------------- */
 @media (max-width: 1024px) {

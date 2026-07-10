@@ -5,6 +5,7 @@ import Hero from './components/Hero'
 import CustomCursor from './components/CustomCursor'
 import MouseGlow from './components/MouseGlow'
 import Footer from './components/Footer'
+import useScrollReveal from './hooks/useScrollReveal'
 
 // chunk 加载失败时自动刷新（部署后旧 chunk 文件名失效）
 function lazyWithRetry(fn) {
@@ -101,6 +102,8 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('hero')
   const location = useLocation()
   usePrefetchRoutes()
+  // 滚动渐入：监听所有 .reveal / .reveal-stagger 元素，进入视口时触发动画
+  useScrollReveal([location.pathname])
 
   // 主题变化时更新 CSS 变量
   useEffect(() => {
