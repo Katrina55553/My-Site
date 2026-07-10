@@ -6,6 +6,7 @@ export default function Hub() {
   return (
     <section id="hub" className="section">
       <div className="section-header reveal">
+        <span className="section-eyebrow">// 01 — Hub</span>
         <h2 className="section-title">个人展示</h2>
         <p className="section-desc">快速前往我的核心项目、个人简历与技术博客，了解我的工程能力与创造力。</p>
       </div>

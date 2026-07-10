@@ -125,6 +125,7 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
   return (
     <section id="lab" className="section">
       <div className="section-header reveal">
+        <span className="section-eyebrow">// 03 — Lab</span>
         <h2 className="section-title">UI 实验室</h2>
         <p className="section-desc">这里是我设计和交互的试验场。你可以亲自操作这些极具视觉表现力的小组件。</p>
       </div>

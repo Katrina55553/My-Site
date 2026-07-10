@@ -17,6 +17,7 @@ export default function Projects() {
         <span>返回主页</span>
       </Link>
       <div className="section-header reveal">
+        <span className="section-eyebrow">// Projects — 精选作品</span>
         <h2 className="section-title">项目展示</h2>
         <p className="section-desc">AI 全栈与后端工程项目展示，涵盖 Agent 编排、RAG 检索、异步架构与代码沙箱等核心实践。</p>
       </div>

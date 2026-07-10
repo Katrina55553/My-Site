@@ -147,6 +147,7 @@ export default function Terminal() {
   return (
     <section id="terminal-section" className="section">
       <div className="section-header reveal">
+        <span className="section-eyebrow">// 02 — Terminal</span>
         <h2 className="section-title">Sci-Fi 极客终端</h2>
         <p className="section-desc">输入指令与系统进行底层交互，解锁彩蛋并快速查询相关信息。</p>
       </div>
