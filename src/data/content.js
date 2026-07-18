@@ -85,6 +85,15 @@ export const projects = [
     icon: 'clock',
     highlights: ['70 个单元测试的纯函数引擎', '法定节假日自动处理', '月薪/日薪实时收入估算', '字体渐变编辑器 + 图片裁剪'],
   },
+  {
+    name: 'Markdown 转换器',
+    description: '纯前端的在线 Markdown 渲染工具，左侧编辑右侧实时预览，支持 GFM、代码高亮、KaTeX 数学公式与 Mermaid 图表，零后端依赖。',
+    tags: ['React 18', 'TypeScript', 'Vite 5', 'CodeMirror 6', 'KaTeX'],
+    link: 'https://katrina55553.github.io/MDTool/',
+    repo: 'https://github.com/Katrina55553/MDTool',
+    icon: 'file-text',
+    highlights: ['GFM 表格/任务列表/删除线', 'KaTeX 行内与块级公式', 'Mermaid 流程图/时序图', '深浅双主题 + localStorage 缓存'],
+  },
 ]
 
 // 博客预览数据
@@ -216,6 +225,18 @@ export const resume = {
         '月薪/日薪实时收入估算，发薪日遇节假日自动提前到最近工作日',
         '字体渐变编辑器（线性/径向、角度滑块、色标增删改）+ cropperjs 图片裁剪 + 极简模式',
         'electron-vite + electron-builder NSIS 打包，支持开机自启与配置本地持久化',
+      ],
+    },
+    {
+      role: 'Markdown 转换器',
+      company: '前端项目 · React 18 + TypeScript + Vite 5',
+      period: '个人项目',
+      description: '纯前端的在线 Markdown 渲染工具，左侧编辑右侧实时预览，支持 GFM、代码高亮、KaTeX 数学公式与 Mermaid 图表，零后端依赖。',
+      achievements: [
+        'CodeMirror 6 编辑器 + react-markdown 渲染管线，串联 remark-gfm/remark-math + rehype-highlight/rehype-katex 插件链',
+        'Mermaid 代码块自定义渲染：useEffect 中调用 mermaid.render() 生成 SVG，主题切换时重新 initialize 并触发重渲染',
+        '通过 data-theme 属性切换 CSS 变量集，index.html 内联脚本在 React 加载前应用主题，避免首屏闪烁',
+        'useLocalStorage Hook 通用化封装 localStorage 读写，持久化编辑器内容与主题选择，GitHub Actions 自动部署到 Pages',
       ],
     },
   ],
