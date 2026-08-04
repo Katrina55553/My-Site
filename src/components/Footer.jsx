@@ -84,11 +84,26 @@ export default function Footer() {
       {/* 底部版权条 */}
       <div className="footer-bottom">
         <p className="footer-copy">© 2026 刘俊威 · Built with React, Vite &amp; pure Passion</p>
-        <p className="footer-icp">
+        <div className="footer-icp">
           <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener noreferrer">
             浙ICP备2026045444号
           </a>
-        </p>
+          <a
+            href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502406925"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-beian"
+          >
+            <img
+              src="/beian.png"
+              alt="公安徽标"
+              className="footer-beian-icon"
+              width="20"
+              height="20"
+            />
+            <span>沪公网安备31011502406925号</span>
+          </a>
+        </div>
       </div>
     </footer>
   )

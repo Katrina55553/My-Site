@@ -714,7 +714,7 @@ body {
   max-width: 1200px; margin: 0 auto;
 }
 .footer-copy { font-size: 0.85rem; color: var(--text-muted); }
-.footer-icp { font-size: 0.8rem; }
+.footer-icp { font-size: 0.8rem; display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
 .footer-icp a {
   color: var(--text-muted); text-decoration: none;
   transition: color 0.3s ease;
@@ -722,6 +722,8 @@ body {
   padding-bottom: 1px;
 }
 .footer-icp a:hover { color: var(--neon-primary); border-bottom-color: var(--neon-primary); }
+.footer-beian { display: inline-flex; align-items: center; gap: 0.35rem; }
+.footer-beian-icon { width: 20px; height: 20px; flex-shrink: 0; display: block; }
 
 /* -------------------------------------------------------------
  * 12.5 CONTACT SECTION (整屏收尾页)
