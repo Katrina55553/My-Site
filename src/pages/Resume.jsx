@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import { resume } from '../data/content'
 
 export default function Resume() {
+  const [avatarLoaded, setAvatarLoaded] = useState(false)
   return (
     <section className="section" style={{ paddingTop: '8rem' }}>
       <Link to="/" className="back-link">
@@ -19,7 +21,12 @@ export default function Resume() {
         {/* 左侧：个人信息 + 技能 + 教育 */}
         <div className="resume-sidebar">
           <div className="resume-card glass-card resume-profile">
-            <img src="/avatar.jpg" alt="头像" className="resume-profile__avatar" />
+            <img
+              src="/avatar.jpg"
+              alt="头像"
+              className={`resume-profile__avatar blur-up ${avatarLoaded ? 'is-loaded' : ''}`}
+              onLoad={() => setAvatarLoaded(true)}
+            />
             <h3 className="resume-profile__name">{resume.name}</h3>
             <p className="resume-profile__title">{resume.title}</p>
             <p className="resume-profile__summary">{resume.summary}</p>

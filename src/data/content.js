@@ -1,3 +1,11 @@
+// Hero 首屏统计数据(count-up 动画使用)
+export const heroStats = [
+  { value: 10, suffix: '+', label: '上线产品' },
+  { value: 3, suffix: '', label: '竞赛银奖' },
+  { value: 1, suffix: '', label: '国一荣誉' },
+  { value: 6, suffix: '', label: '英语等级' },
+]
+
 // 项目展示数据
 export const projects = [
   {

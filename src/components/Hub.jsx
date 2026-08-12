@@ -17,6 +17,7 @@ export default function Hub() {
         <TiltCard>
           <Link to="/projects" className="card-content card-content--link">
             <div className="card-glow"></div>
+            <span className="card-index" aria-hidden="true">01</span>
             <div className="card-header-icon">
               <LayoutGrid size={28} />
             </div>
@@ -33,6 +34,7 @@ export default function Hub() {
         <TiltCard>
           <Link to="/resume" className="card-content card-content--link">
             <div className="card-glow"></div>
+            <span className="card-index" aria-hidden="true">02</span>
             <div className="card-header-icon">
               <FileText size={28} />
             </div>
@@ -49,6 +51,7 @@ export default function Hub() {
         <TiltCard>
           <a href="https://blog.cogod.cn/" target="_blank" rel="noopener noreferrer" className="card-content card-content--link">
             <div className="card-glow"></div>
+            <span className="card-index" aria-hidden="true">03</span>
             <div className="card-header-icon">
               <BookOpen size={28} />
             </div>

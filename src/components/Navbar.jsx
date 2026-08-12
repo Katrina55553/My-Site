@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Github } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
@@ -28,6 +29,15 @@ function prefetchRoute(path) {
 export default function Navbar({ activeSection }) {
   const location = useLocation()
   const navigate = useNavigate()
+  const [scrolled, setScrolled] = useState(false)
+
+  // 滚动收缩：下滑超过 30px 时 navbar 收缩 + 背景加深
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 30)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   // 主页锚点跳转：在子页面时先回主页再滚动到锚点
   const handleHashNav = (e, item) => {
@@ -43,7 +53,7 @@ export default function Navbar({ activeSection }) {
   }
 
   return (
-    <header className="navbar">
+    <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <Link to="/" className="logo">
         <span className="logo-bracket">&lt;</span>
         <span className="logo-text">KATRINA</span>

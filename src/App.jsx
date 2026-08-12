@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense, Component } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense, Component } from 'react'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -50,20 +50,41 @@ function usePrefetchRoutes() {
   }, [])
 }
 
-// 简易加载占位：保持布局高度，避免 CLS
+// A1. 顶部滚动进度条：监听滚动，计算文档滚动百分比并填充霓虹进度条
+function ScrollProgress() {
+  const barRef = useRef(null)
+  useEffect(() => {
+    const update = () => {
+      const el = barRef.current
+      if (!el) return
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const scrolled = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0
+      el.style.width = `${scrolled}%`
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    return () => {
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
+  }, [])
+  return (
+    <div className="scroll-progress" aria-hidden="true">
+      <div ref={barRef} className="scroll-progress__bar"></div>
+    </div>
+  )
+}
+
+// D2. 骨架屏占位：保持布局高度，避免 CLS，同时用 shimmer 动画呼应整体风格
 function SectionFallback({ minHeight = '60vh' }) {
   return (
-    <div
-      style={{
-        minHeight,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'var(--text-muted)',
-        fontFamily: 'var(--font-heading)',
-      }}
-    >
-      <span style={{ opacity: 0.4 }}>Loading…</span>
+    <div style={{ minHeight, display: 'flex', flexDirection: 'column', gap: '1rem', padding: '2rem 0' }}>
+      <div className="skeleton-box" style={{ marginBottom: '1rem' }}></div>
+      <div className="skeleton-line skeleton-line--title"></div>
+      <div className="skeleton-line skeleton-line--full"></div>
+      <div className="skeleton-line skeleton-line--full"></div>
+      <div className="skeleton-line skeleton-line--short"></div>
     </div>
   )
 }
@@ -137,6 +158,9 @@ export default function App() {
 
   return (
     <>
+      {/* A1. 顶部滚动进度条 */}
+      <ScrollProgress />
+
       {/* 动态背景流光 */}
       <div className="bg-glow-container">
         <div className="glow-orb orb-1"></div>
@@ -151,61 +175,64 @@ export default function App() {
       <MouseGlow />
       <Navbar activeSection={activeSection} />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              hue={hue}
-              setHue={setHue}
-              glow={glow}
-              setGlow={setGlow}
-              activeSection={activeSection}
-              setActiveSection={setActiveSection}
-            />
-          }
-        />
-        <Route
-          path="/projects"
-          element={
-            <SubPage>
-              <Suspense fallback={<SectionFallback />}>
-                <Projects />
+      {/* D1. 路由切换淡入：key 随 pathname 变化触发动画 */}
+      <div key={location.pathname} className="route-fade">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                hue={hue}
+                setHue={setHue}
+                glow={glow}
+                setGlow={setGlow}
+                activeSection={activeSection}
+                setActiveSection={setActiveSection}
+              />
+            }
+          />
+          <Route
+            path="/projects"
+            element={
+              <SubPage>
+                <Suspense fallback={<SectionFallback />}>
+                  <Projects />
+                </Suspense>
+              </SubPage>
+            }
+          />
+          <Route
+            path="/resume"
+            element={
+              <SubPage>
+                <Suspense fallback={<SectionFallback />}>
+                  <ResumePage />
+                </Suspense>
+              </SubPage>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <SubPage>
+                <Suspense fallback={<SectionFallback />}>
+                  <Contact />
+                </Suspense>
+              </SubPage>
+            }
+          />
+          <Route
+            path="/showcase"
+            element={
+              <Suspense fallback={<SectionFallback minHeight="100vh" />}>
+                <Showcase3D />
               </Suspense>
-            </SubPage>
-          }
-        />
-        <Route
-          path="/resume"
-          element={
-            <SubPage>
-              <Suspense fallback={<SectionFallback />}>
-                <ResumePage />
-              </Suspense>
-            </SubPage>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <SubPage>
-              <Suspense fallback={<SectionFallback />}>
-                <Contact />
-              </Suspense>
-            </SubPage>
-          }
-        />
-        <Route
-          path="/showcase"
-          element={
-            <Suspense fallback={<SectionFallback minHeight="100vh" />}>
-              <Showcase3D />
-            </Suspense>
-          }
-        />
-        {/* 兜底：未匹配路由重定向到首页 */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+            }
+          />
+          {/* 兜底：未匹配路由重定向到首页 */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
 
       <Footer />
     </>

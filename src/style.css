@@ -18,7 +18,7 @@
 
   --text-main: #f8fafc;
   --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-muted: #7c8aa3;
 
   --font-heading: 'Chakra Petch', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
   --font-body: 'Manrope', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
@@ -1199,4 +1199,367 @@ body.custom-cursor-enabled .custom-cursor { display: block; }
   font-size: 11px;
   color: var(--text-muted);
   letter-spacing: 0.5px;
+}
+
+/* =============================================================
+ * 15. POLISH ENHANCEMENTS (美化增强)
+ *    A1 滚动进度条 / A2 navbar 收缩 / A3 hero 滚动指示器
+ *    A4 卡片序号 / A5 标题前缀
+ *    B1 卡片跑马灯 / B2 按钮扫光 / B3 链接中心展开
+ *    B4 图标旋转 / B5 数字统计
+ *    C1 focus-visible / C3 scroll-margin-top
+ *    D1 路由淡入 / D2 骨架屏 / D3 图片 blur-up
+ * ============================================================= */
+
+/* ---- A1. 顶部滚动进度条 ---- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: transparent;
+  z-index: 101;
+  pointer-events: none;
+}
+.scroll-progress__bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary));
+  box-shadow: 0 0 10px var(--neon-primary), 0 0 20px var(--neon-primary-glow);
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* ---- A2. Navbar 滚动收缩 ---- */
+.navbar {
+  transition: padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.4s ease,
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+}
+.navbar.scrolled {
+  padding: 0.7rem 4rem;
+  background: rgba(7, 9, 19, 0.85);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+.navbar.scrolled .logo { transform: scale(0.94); }
+.navbar .logo { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* ---- A3. Hero 滚动指示器 ---- */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  opacity: 0.7;
+  animation: scroll-hint-pulse 2.4s ease-in-out infinite;
+  transition: opacity 0.4s ease;
+  z-index: 5;
+}
+.scroll-hint.is-hidden { opacity: 0; pointer-events: none; }
+.scroll-hint__mouse {
+  width: 22px;
+  height: 36px;
+  border: 1.5px solid var(--text-muted);
+  border-radius: 12px;
+  position: relative;
+}
+.scroll-hint__wheel {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 7px;
+  background: var(--neon-primary);
+  border-radius: 2px;
+  box-shadow: 0 0 6px var(--neon-primary);
+  animation: scroll-hint-wheel 1.8s ease-in-out infinite;
+}
+@keyframes scroll-hint-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.4; }
+}
+@keyframes scroll-hint-wheel {
+  0% { transform: translate(-50%, 0); opacity: 1; }
+  100% { transform: translate(-50%, 12px); opacity: 0; }
+}
+@media (max-width: 1024px) {
+  .scroll-hint { display: none; }
+}
+
+/* ---- A4. Hub 卡片序号水印 ---- */
+.card-content { position: relative; }
+.card-index {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-family: var(--font-heading);
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.04);
+  letter-spacing: -2px;
+  line-height: 1;
+  pointer-events: none;
+  transition: color 0.4s ease, text-shadow 0.4s ease, transform 0.4s ease;
+  z-index: 1;
+}
+.hub-card:hover .card-index {
+  color: hsla(var(--primary-hue), 85%, 65%, 0.18);
+  text-shadow: 0 0 20px var(--neon-primary-glow);
+  transform: translateY(-2px);
+}
+
+/* ---- A5. Section 标题终端式前缀 ---- */
+.section-title { padding-left: 1.6em; }
+.section-title::before {
+  content: '>_';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-58%);
+  font-size: 0.55em;
+  color: var(--neon-primary);
+  font-weight: 600;
+  letter-spacing: 0;
+  opacity: 0.85;
+  text-shadow: 0 0 12px var(--neon-primary-glow);
+  animation: terminal-blink 2.4s steps(1, end) infinite;
+}
+@keyframes terminal-blink {
+  0%, 70%, 100% { opacity: 0.85; }
+  75%, 85% { opacity: 0.2; }
+}
+
+/* ---- B1. 卡片边框跑马灯 hover 效果 ---- */
+.hub-card,
+.project-card { position: relative; }
+.hub-card::before,
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--card-angle, 0deg),
+    transparent 0deg,
+    var(--neon-primary) 60deg,
+    var(--neon-secondary) 120deg,
+    transparent 180deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+@property --card-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+.hub-card:hover::before,
+.project-card:hover::before {
+  opacity: 1;
+  animation: card-border-spin 2.5s linear infinite;
+}
+@keyframes card-border-spin {
+  to { --card-angle: 360deg; }
+}
+/* 不支持 @property 的浏览器降级:仅显示静态高亮边框 */
+@supports not (background: conic-gradient(red, blue)) {
+  .hub-card::before, .project-card::before { display: none; }
+}
+
+/* ---- B2. 按钮 hover 扫光 ---- */
+.btn { position: relative; overflow: hidden; }
+.btn-primary::after,
+.btn-secondary::after,
+.contact-form__submit::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.btn-primary:hover::after,
+.btn-secondary:hover::after,
+.contact-form__submit:hover::after {
+  left: 150%;
+}
+
+/* ---- B3. 链接下划线中心展开 ---- */
+.nav-link::after {
+  transform: translateX(-50%);
+  left: 50%;
+  width: 0;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* ---- B4. 卡片图标 hover 旋转 ---- */
+.card-header-icon svg,
+.project-card__icon svg {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hub-card:hover .card-header-icon svg,
+.project-card:hover .project-card__icon svg {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+/* ---- B5. 数字统计条 ---- */
+.hero-stats {
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.hero-stat__value {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px var(--neon-primary-glow);
+}
+.hero-stat__value__plus {
+  -webkit-text-fill-color: var(--neon-primary);
+  text-shadow: 0 0 12px var(--neon-primary);
+  margin-left: 2px;
+}
+.hero-stat__label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+@media (max-width: 768px) {
+  .hero-stats { gap: 1.5rem; }
+  .hero-stat__value { font-size: 1.6rem; }
+}
+
+/* ---- C1. 全局 focus-visible 样式 ---- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--neon-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px var(--neon-primary-glow);
+}
+/* 已有 box-shadow 的元素(如 form input focus)避免覆盖 */
+.form-group input:focus-visible,
+.form-group textarea:focus-visible {
+  outline: none;
+}
+
+/* ---- C3. 滚动锚点偏移 ---- */
+section[id] { scroll-margin-top: 90px; }
+
+/* ---- D1. 路由切换淡入 ---- */
+.route-fade {
+  animation: route-fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes route-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- D2. 骨架屏占位 ---- */
+.skeleton-card {
+  border-radius: 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.skeleton-line {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+.skeleton-line--title { height: 22px; width: 60%; }
+.skeleton-line--short { width: 40%; }
+.skeleton-line--full { width: 100%; }
+.skeleton-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-line, .skeleton-box { animation: none; }
+}
+
+/* ---- D3. 图片 blur-up ---- */
+.blur-up {
+  filter: blur(12px);
+  transform: scale(1.04);
+  transition: filter 0.6s ease, transform 0.6s ease;
+}
+.blur-up.is-loaded {
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* ---- C4. 终端字体(配合 index.html 引入 JetBrains Mono) ---- */
+.terminal-body {
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 }
