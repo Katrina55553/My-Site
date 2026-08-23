@@ -88,6 +88,9 @@ function Showcase3DScene({ hue }) {
   const keysRef = useRef({})
   const velocityRef = useRef({ x: 0, z: 0 })
   const currentZoneRef = useRef('center')
+  const hoveredMeshRef = useRef(null)
+  const tooltipRef = useRef(null)
+  const touchRef = useRef({ active: false, startX: 0, startY: 0, dx: 0, dz: 0 })
   const [currentZone, setCurrentZone] = useState('center')
   const [hoveredItem, setHoveredItem] = useState(null)
   const [activeKeys, setActiveKeys] = useState({})
@@ -232,7 +235,8 @@ function Showcase3DScene({ hue }) {
         new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide })
       )
       mesh.position.set(ZONES.projects.x + offsetX, 2, ZONES.projects.z + 3)
-      mesh.lookAt(ZONES.projects.x, 2, ZONES.projects.z - 5)
+      // 卡片正面朝向中心（玩家来向），避免走近时看到镜像文字
+      mesh.lookAt(ZONES.projects.x + offsetX, 2, ZONES.projects.z + 20)
       mesh.userData = {
         project, baseY: 2, floatOffset: i * 0.7,
         link: project.link !== '#' ? project.link : (project.repo || '#'),
@@ -489,15 +493,51 @@ function Showcase3DScene({ hue }) {
       raycaster.setFromCamera(mouseVec, camera)
       const intersects = raycaster.intersectObjects([...cardMeshes, ...linkMeshes])
       if (intersects.length > 0) {
+        hoveredMeshRef.current = intersects[0].object
         setHoveredItem(intersects[0].object.userData)
         renderer.domElement.style.cursor = 'pointer'
+        // tooltip 跟随鼠标
+        if (tooltipRef.current) {
+          tooltipRef.current.style.left = `${e.clientX - rect.left + 16}px`
+          tooltipRef.current.style.top = `${e.clientY - rect.top - 8}px`
+        }
       } else {
+        hoveredMeshRef.current = null
         setHoveredItem(null)
         renderer.domElement.style.cursor = 'default'
       }
     }
     container.addEventListener('click', onClick)
     container.addEventListener('mousemove', onMouseMove)
+
+    // ---- 触屏拖动控制（移动端） ----
+    const onTouchStart = (e) => {
+      if (e.touches.length !== 1) return
+      const touch = e.touches[0]
+      touchRef.current.active = true
+      touchRef.current.startX = touch.clientX
+      touchRef.current.startY = touch.clientY
+      touchRef.current.dx = 0
+      touchRef.current.dz = 0
+    }
+    const onTouchMove = (e) => {
+      if (!touchRef.current.active || e.touches.length !== 1) return
+      const touch = e.touches[0]
+      const dx = touch.clientX - touchRef.current.startX
+      const dy = touch.clientY - touchRef.current.startY
+      // 拖拽方向映射到世界坐标，限幅到 [-1, 1]
+      touchRef.current.dx = Math.max(-1, Math.min(1, dx / 60))
+      touchRef.current.dz = Math.max(-1, Math.min(1, dy / 60))
+    }
+    const onTouchEnd = () => {
+      touchRef.current.active = false
+      touchRef.current.dx = 0
+      touchRef.current.dz = 0
+    }
+    container.addEventListener('touchstart', onTouchStart, { passive: true })
+    container.addEventListener('touchmove', onTouchMove, { passive: true })
+    container.addEventListener('touchend', onTouchEnd)
+    container.addEventListener('touchcancel', onTouchEnd)
 
     const clock = new THREE.Clock()
     let isVisible = true
@@ -516,27 +556,35 @@ function Showcase3DScene({ hue }) {
 
     const animate = () => {
       if (!isVisible) { animationRef.current = null; return }
-      const t = clock.getElapsedTime()
+      // 注意：getElapsedTime() 内部会消耗 getDelta()，必须先取 delta 再读 elapsedTime
+      const dt = Math.min(clock.getDelta(), 0.05) * 60
+      const t = clock.elapsedTime
 
       let moveX = 0, moveZ = 0
       if (keys['w']) moveZ -= 1
       if (keys['s']) moveZ += 1
       if (keys['a']) moveX -= 1
       if (keys['d']) moveX += 1
+      // 触屏拖动控制（移动端）
+      if (touchRef.current.active) {
+        moveX += touchRef.current.dx
+        moveZ += touchRef.current.dz
+      }
       if (moveX !== 0 && moveZ !== 0) { moveX *= 0.707; moveZ *= 0.707 }
 
-      velocity.x += moveX * ACCEL
-      velocity.z += moveZ * ACCEL
+      velocity.x += moveX * ACCEL * dt
+      velocity.z += moveZ * ACCEL * dt
       const speed = Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z)
       if (speed > MAX_SPEED) {
         velocity.x = (velocity.x / speed) * MAX_SPEED
         velocity.z = (velocity.z / speed) * MAX_SPEED
       }
-      if (moveX === 0) velocity.x *= FRICTION
-      if (moveZ === 0) velocity.z *= FRICTION
+      const friction = Math.pow(FRICTION, dt)
+      if (moveX === 0) velocity.x *= friction
+      if (moveZ === 0) velocity.z *= friction
 
-      ball.position.x += velocity.x
-      ball.position.z += velocity.z
+      ball.position.x += velocity.x * dt
+      ball.position.z += velocity.z * dt
       ball.position.x = Math.max(-BOUND, Math.min(BOUND, ball.position.x))
       ball.position.z = Math.max(-BOUND, Math.min(BOUND, ball.position.z))
       ball.rotation.z -= velocity.x * 0.5
@@ -570,9 +618,10 @@ function Showcase3DScene({ hue }) {
       const camTargetX = ball.position.x
       const camTargetZ = ball.position.z + 10
       const camTargetY = 7
-      camera.position.x += (camTargetX - camera.position.x) * 0.08
-      camera.position.y += (camTargetY - camera.position.y) * 0.08
-      camera.position.z += (camTargetZ - camera.position.z) * 0.08
+      const camLerp = 1 - Math.pow(0.92, dt)
+      camera.position.x += (camTargetX - camera.position.x) * camLerp
+      camera.position.y += (camTargetY - camera.position.y) * camLerp
+      camera.position.z += (camTargetZ - camera.position.z) * camLerp
       camera.lookAt(ball.position.x, 1, ball.position.z)
 
       core.rotation.y = t * 0.2
@@ -581,6 +630,10 @@ function Showcase3DScene({ hue }) {
 
       cardMeshes.forEach(mesh => {
         mesh.position.y = mesh.userData.baseY + Math.sin(t + mesh.userData.floatOffset) * 0.2
+        // 悬停放大反馈
+        const targetScale = mesh === hoveredMeshRef.current ? 1.15 : 1
+        mesh.scale.x += (targetScale - mesh.scale.x) * 0.15 * dt
+        mesh.scale.y += (targetScale - mesh.scale.y) * 0.15 * dt
       })
       linkMeshes.forEach(sp => {
         sp.position.y = sp.userData.baseY + Math.sin(t + sp.userData.floatOffset) * 0.15
@@ -644,6 +697,10 @@ function Showcase3DScene({ hue }) {
       window.removeEventListener('keyup', onKeyUp)
       container.removeEventListener('click', onClick)
       container.removeEventListener('mousemove', onMouseMove)
+      container.removeEventListener('touchstart', onTouchStart)
+      container.removeEventListener('touchmove', onTouchMove)
+      container.removeEventListener('touchend', onTouchEnd)
+      container.removeEventListener('touchcancel', onTouchEnd)
       window.removeEventListener('resize', handleResize)
       scene.traverse(obj => {
         if (obj.geometry) obj.geometry.dispose()
@@ -694,11 +751,11 @@ function Showcase3DScene({ hue }) {
       </div>
 
       <div className="showcase-overlay-bottom">
-        <span className="showcase-hint">WASD / 方向键移动 · 点击卡片或图标访问链接</span>
+        <span className="showcase-hint">WASD / 方向键移动（移动端拖动屏幕）· 点击卡片或图标访问链接</span>
       </div>
 
       {hoveredItem && (
-        <div className="showcase-tooltip">
+        <div className="showcase-tooltip" ref={tooltipRef}>
           {hoveredItem.project?.name || hoveredItem.social?.label || ''}
         </div>
       )}
@@ -707,6 +764,11 @@ function Showcase3DScene({ hue }) {
 }
 
 export default function Showcase3D() {
+  // 从全站主题变量读取色相，保持 3D 场景与主题一致
+  const hue = parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue('--primary-hue') || '70',
+    10
+  )
   return (
     <div className="showcase-page">
       <Suspense
@@ -716,7 +778,7 @@ export default function Showcase3D() {
           </div>
         }
       >
-        <Showcase3DScene hue={70} />
+        <Showcase3DScene hue={hue} />
       </Suspense>
     </div>
   )

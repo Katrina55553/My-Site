@@ -188,7 +188,7 @@ export default function ParticleScene({ hue }) {
     )
     visibilityObserver.observe(container)
 
-    // ---- 窗口大小变化（rAF 节流，避免拖拽 resize 时频繁重设） ----
+    // ---- 容器尺寸变化(Res rAF 节流,处理懒加载时容器宽度为 0、布局后才有尺寸的场景) ----
     let resizeRaf = null
     const handleResize = () => {
       if (resizeRaf) return
@@ -203,6 +203,9 @@ export default function ParticleScene({ hue }) {
       })
     }
     window.addEventListener('resize', handleResize)
+    // 监听容器自身尺寸变化(Suspense fallback 切换 / flex 布局重排 / 响应式断点切换都会触发)
+    const containerObserver = new ResizeObserver(handleResize)
+    containerObserver.observe(container)
 
     // ---- 清理 ----
     return () => {
@@ -210,6 +213,7 @@ export default function ParticleScene({ hue }) {
       if (resizeRaf) cancelAnimationFrame(resizeRaf)
       clearTimeout(autoRotateTimer)
       visibilityObserver.disconnect()
+      containerObserver.disconnect()
       container.removeEventListener('mousedown', handleMouseDown)
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)

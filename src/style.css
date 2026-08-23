@@ -948,10 +948,6 @@ body {
  * 13. RESPONSIVENESS
  * ------------------------------------------------------------- */
 @media (max-width: 1024px) {
-  .hero-section { flex-direction: column-reverse; padding-top: 8rem; gap: 3rem; text-align: center; }
-  .hero-content { max-width: 100%; display: flex; flex-direction: column; align-items: center; }
-  .hero-title { font-size: 3rem; }
-  .hero-buttons { justify-content: center; }
   .hub-grid { grid-template-columns: 1fr; }
   .lab-grid { grid-template-columns: 1fr; }
   .resume-grid { grid-template-columns: 1fr; }
@@ -962,7 +958,11 @@ body {
 @media (max-width: 768px) {
   .navbar { padding: 1.25rem 2rem; }
   .nav-links { display: none; }
+  .hero-section { flex-direction: column-reverse; padding-top: 8rem; gap: 3rem; text-align: center; align-items: center; }
+  .hero-content { max-width: 100%; display: flex; flex-direction: column; align-items: center; }
+  .hero-visual { width: 100%; max-width: 450px; }
   .hero-title { font-size: 2.5rem; }
+  .hero-buttons { justify-content: center; }
   .section-title { font-size: 2rem; }
   .hub-card .card-content { padding: 2rem; }
   .projects-grid { grid-template-columns: 1fr; }
@@ -1093,9 +1093,9 @@ body.custom-cursor-enabled .custom-cursor { display: block; }
 
 .showcase-tooltip {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  transform: translate(0, -50%);
   padding: 8px 20px;
   background: var(--bg-dark);
   border: 1px solid var(--neon-primary);
@@ -1111,8 +1111,8 @@ body.custom-cursor-enabled .custom-cursor { display: block; }
   animation: tooltip-fade 0.2s ease;
 }
 @keyframes tooltip-fade {
-  from { opacity: 0; transform: translate(-50%, -45%); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .showcase-loading {
