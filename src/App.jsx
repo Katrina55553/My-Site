@@ -51,15 +51,17 @@ function usePrefetchRoutes() {
 }
 
 // A1. 顶部滚动进度条：监听滚动，计算文档滚动百分比并填充霓虹进度条
+// scaleX 走合成器（不触发 layout）；支持滚动驱动动画的浏览器交给 CSS，零 JS 监听
 function ScrollProgress() {
   const barRef = useRef(null)
   useEffect(() => {
+    const el = barRef.current
+    if (!el) return
+    if (CSS.supports('animation-timeline: scroll()')) return
     const update = () => {
-      const el = barRef.current
-      if (!el) return
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrolled = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0
-      el.style.width = `${scrolled}%`
+      const scrolled = docHeight > 0 ? window.scrollY / docHeight : 0
+      el.style.transform = `scaleX(${scrolled})`
     }
     update()
     window.addEventListener('scroll', update, { passive: true })

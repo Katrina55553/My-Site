@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { Github } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
@@ -26,7 +26,7 @@ function prefetchRoute(path) {
   }
 }
 
-export default function Navbar({ activeSection }) {
+function Navbar({ activeSection }) {
   const location = useLocation()
   const navigate = useNavigate()
   const [scrolled, setScrolled] = useState(false)
@@ -116,3 +116,6 @@ export default function Navbar({ activeSection }) {
     </header>
   )
 }
+
+// memo：Lab 滑块拖动等与导航无关的 state 更新不再触发导航栏重渲染
+export default memo(Navbar)

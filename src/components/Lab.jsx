@@ -25,13 +25,19 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTrack, setCurrentTrack] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
-  const [barHeights, setBarHeights] = useState(Array(12).fill(4))
 
   const synthRef = useRef(null)
   const playIntervalRef = useRef(null)
   const visualizerIntervalRef = useRef(null)
   const vinylRef = useRef(null)
   const trackRef = useRef(0)
+  // 频谱条 DOM 引用池：直改样式，避免 120ms 一次 setState 引发整个 Lab reconcile
+  const barsRef = useRef([])
+  // 滑块 rAF 节流状态（见 handleHueChange / handleGlowChange）
+  const hueRafRef = useRef(null)
+  const glowRafRef = useRef(null)
+  const pendingHueRef = useRef(0)
+  const pendingGlowRef = useRef(0)
 
   // 初始化合成器
   if (!synthRef.current) {
@@ -44,6 +50,8 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
       synthRef.current?.stop()
       clearInterval(playIntervalRef.current)
       clearInterval(visualizerIntervalRef.current)
+      if (hueRafRef.current !== null) cancelAnimationFrame(hueRafRef.current)
+      if (glowRafRef.current !== null) cancelAnimationFrame(glowRafRef.current)
     }
   }, [])
 
@@ -72,7 +80,9 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
     }, 1000)
 
     visualizerIntervalRef.current = setInterval(() => {
-      setBarHeights(Array(12).fill(0).map(() => Math.floor(Math.random() * 32) + 6))
+      barsRef.current.forEach((bar) => {
+        if (bar) bar.style.height = `${Math.floor(Math.random() * 32) + 6}px`
+      })
     }, 120)
   }, [])
 
@@ -81,7 +91,10 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
     clearInterval(playIntervalRef.current)
     clearInterval(visualizerIntervalRef.current)
     vinylRef.current?.classList.remove('playing')
-    setBarHeights(Array(12).fill(4))
+    // 清除内联高度，回落到 CSS 默认的 4px
+    barsRef.current.forEach((bar) => {
+      if (bar) bar.style.height = ''
+    })
   }, [])
 
   const handlePlayClick = () => {
@@ -119,6 +132,26 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
     setCurrentTime(Math.floor(clickRatio * PLAYLIST[trackRef.current].duration))
   }
 
+  // 滑块 rAF 节流：拖动时 input 事件可能一帧内触发多次，
+  // 合并为每帧一次 setState（setHue/setGlow 会引发 App 整树 reconcile + 3D 粒子顶点色重写）。
+  // pending ref 保证应用的是该帧内最后一次值，滑块不会回跳
+  const handleHueChange = (e) => {
+    pendingHueRef.current = Number(e.target.value)
+    if (hueRafRef.current !== null) return
+    hueRafRef.current = requestAnimationFrame(() => {
+      hueRafRef.current = null
+      setHue(pendingHueRef.current)
+    })
+  }
+  const handleGlowChange = (e) => {
+    pendingGlowRef.current = Number(e.target.value)
+    if (glowRafRef.current !== null) return
+    glowRafRef.current = requestAnimationFrame(() => {
+      glowRafRef.current = null
+      setGlow(pendingGlowRef.current)
+    })
+  }
+
   const track = PLAYLIST[currentTrack]
   const progressPercent = (currentTime / track.duration) * 100
 
@@ -150,8 +183,9 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
               <p className="track-artist">{track.artist}</p>
             </div>
             <div className="audio-visualizer">
-              {barHeights.map((h, i) => (
-                <div key={i} className="bar" style={{ height: `${h}px` }}></div>
+              {Array.from({ length: 12 }, (_, i) => (
+                // React 19 安全写法：ref 回调用语句体，避免隐式返回 DOM 节点被当作 cleanup
+                <div key={i} className="bar" ref={(el) => { barsRef.current[i] = el }}></div>
               ))}
             </div>
             <div className="progress-container">
@@ -191,7 +225,7 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
                 max="360"
                 value={hue}
                 className="neon-slider"
-                onChange={(e) => setHue(Number(e.target.value))}
+                onChange={handleHueChange}
               />
             </div>
 
@@ -203,7 +237,7 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
                 max="150"
                 value={glow}
                 className="neon-slider"
-                onChange={(e) => setGlow(Number(e.target.value))}
+                onChange={handleGlowChange}
               />
             </div>
 
