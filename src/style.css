@@ -1429,44 +1429,6 @@ body.custom-cursor-enabled .custom-cursor { display: block; }
   transform: rotate(-8deg) scale(1.08);
 }
 
-/* ---- B5. 数字统计条 ---- */
-.hero-stats {
-  display: flex;
-  gap: 2.5rem;
-  margin-top: 2.5rem;
-  flex-wrap: wrap;
-}
-.hero-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-.hero-stat__value {
-  font-family: var(--font-heading);
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1;
-  background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 30px var(--neon-primary-glow);
-}
-.hero-stat__value__plus {
-  -webkit-text-fill-color: var(--neon-primary);
-  text-shadow: 0 0 12px var(--neon-primary);
-  margin-left: 2px;
-}
-.hero-stat__label {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-@media (max-width: 768px) {
-  .hero-stats { gap: 1.5rem; }
-  .hero-stat__value { font-size: 1.6rem; }
-}
-
 /* ---- C1. 全局 focus-visible 样式 ---- */
 a:focus-visible,
 button:focus-visible,

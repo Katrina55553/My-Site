@@ -8,6 +8,9 @@ export class AmbientSynth {
     this.gainNode = null
     this.currentChord = 0
     this.chordInterval = null
+    // stop() 的延迟清理代数：快速 stop→start 时让过期的延迟回调失效，
+    // 否则 600ms 后的 stopOscillators/suspend 会杀掉刚恢复播放的新和弦
+    this.stopGeneration = 0
 
     // 三套不同的和弦进程，对应三首乐曲
     this.trackChords = [
@@ -38,6 +41,7 @@ export class AmbientSynth {
   start(trackIndex) {
     if (this.isPlaying) this.stop()
     this.isPlaying = true
+    this.stopGeneration++
 
     // 懒加载 AudioContext，确保在用户手势点击后初始化
     if (!this.ctx) {
@@ -129,6 +133,7 @@ export class AmbientSynth {
     if (!this.isPlaying) return
     this.isPlaying = false
     clearInterval(this.chordInterval)
+    const gen = ++this.stopGeneration
 
     if (this.gainNode && this.ctx) {
       const now = this.ctx.currentTime
@@ -137,6 +142,8 @@ export class AmbientSynth {
       this.gainNode.gain.linearRampToValueAtTime(0, now + 0.5)
 
       setTimeout(() => {
+        // 期间已重新开始播放（start 会推进代数），放弃清理，避免杀掉新和弦
+        if (gen !== this.stopGeneration) return
         this.stopOscillators()
         if (this.ctx && this.ctx.state === 'running') this.ctx.suspend()
       }, 600)

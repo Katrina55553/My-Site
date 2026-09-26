@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from 'react'
 import { Github } from 'lucide-react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const NAV_ITEMS = [
   { id: 'hero', label: '主页', path: '/' },
@@ -28,7 +28,6 @@ function prefetchRoute(path) {
 
 function Navbar({ activeSection }) {
   const location = useLocation()
-  const navigate = useNavigate()
   const [scrolled, setScrolled] = useState(false)
 
   // 滚动收缩：下滑超过 30px 时 navbar 收缩 + 背景加深
@@ -39,16 +38,10 @@ function Navbar({ activeSection }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // 主页锚点跳转：在子页面时先回主页再滚动到锚点
-  const handleHashNav = (e, item) => {
-    if (location.pathname !== '/') {
-      e.preventDefault()
-      navigate('/')
-      // 等主页挂载后再滚动
-      setTimeout(() => {
-        const el = document.getElementById(item.hash)
-        if (el) el.scrollIntoView({ behavior: 'smooth' })
-      }, 100)
+  // 已在主页时点击「主页」：平滑滚回顶部 hero 区（路由未变，App 的滚顶 effect 不会触发）
+  const handleHomeClick = () => {
+    if (location.pathname === '/') {
+      document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
@@ -88,17 +81,18 @@ function Navbar({ activeSection }) {
               </Link>
             )
           }
-          // 主页锚点项
+          // 主页项：必须用 Link 而非 <a href="#hero">，
+          // 裸锚点会把 URL hash 改成 #hero，破坏 HashRouter 的路由解析
           const isActive = location.pathname === '/' && activeSection === item.id
           return (
-            <a
+            <Link
               key={item.id}
-              href={`#${item.id}`}
-              onClick={(e) => item.hash && handleHashNav(e, item)}
+              to="/"
+              onClick={handleHomeClick}
               className={`nav-link ${isActive ? 'active' : ''}`}
             >
               {item.label}
-            </a>
+            </Link>
           )
         })}
       </nav>

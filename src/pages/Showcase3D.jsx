@@ -482,7 +482,8 @@ function Showcase3DScene({ hue }) {
       const intersects = raycaster.intersectObjects([...cardMeshes, ...linkMeshes])
       if (intersects.length > 0) {
         const data = intersects[0].object.userData
-        if (data.link) window.open(data.link, '_blank', 'noopener,noreferrer')
+        // link 可能兜底为 '#'（无在线地址也无仓库），此时不应打开空白标签页
+        if (data.link && data.link !== '#') window.open(data.link, '_blank', 'noopener,noreferrer')
         else if (data.social) window.open(data.social.url, '_blank', 'noopener,noreferrer')
       }
     }

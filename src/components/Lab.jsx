@@ -66,9 +66,12 @@ export default function Lab({ hue, setHue, glow, setGlow }) {
     playIntervalRef.current = setInterval(() => {
       setCurrentTime((prev) => {
         const next = prev + 1
-        if (next >= PLAYLIST[idx].duration) {
+        // 必须用 trackRef 取当前曲目：闭包里的 idx 是启动时的快照，
+        // 自动切歌后会一直用第一首的时长/索引，导致第 2 首被反复重启、第 3 首永远播不到
+        const curIdx = trackRef.current
+        if (next >= PLAYLIST[curIdx].duration) {
           // 自动切到下一首
-          const nextIdx = (idx + 1) % PLAYLIST.length
+          const nextIdx = (curIdx + 1) % PLAYLIST.length
           trackRef.current = nextIdx
           setCurrentTrack(nextIdx)
           synthRef.current?.stop()

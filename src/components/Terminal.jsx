@@ -1,5 +1,17 @@
 import { useState, useRef, useEffect } from 'react'
-import { terminalCommands, projects, blogPosts } from '../data/content'
+import { terminalCommands, projects } from '../data/content'
+
+// 终端输出走 dangerouslySetInnerHTML，用户输入必须先转义，否则可注入 HTML/JS
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+// 历史记录上限：hack 等命令会刷大量行，无上限会无限撑大 DOM
+const MAX_HISTORY = 200
 
 // 初始历史记录
 function getInitialHistory() {
@@ -38,14 +50,14 @@ export default function Terminal() {
   }, [history])
 
   const appendLine = (text, type = 'default') => {
-    setHistory((prev) => [...prev, { type, text }])
+    setHistory((prev) => [...prev.slice(-(MAX_HISTORY - 1)), { type, text }])
   }
 
   const executeCommand = (rawCmd) => {
     const cmd = rawCmd.trim().toLowerCase()
 
-    // 打印用户输入
-    appendLine(`katrina > ${rawCmd}`, 'user')
+    // 打印用户输入（转义后回显，防 XSS）
+    appendLine(`katrina > ${escapeHtml(rawCmd)}`, 'user')
 
     switch (cmd) {
       case 'help': {
@@ -179,7 +191,6 @@ export default function Terminal() {
                 ref={inputRef}
                 type="text"
                 autoComplete="off"
-                autoFocus
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}

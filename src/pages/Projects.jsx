@@ -1,4 +1,4 @@
-import { LayoutGrid, Globe, Terminal, Sparkles, ArrowUpRight, ArrowLeft, Github, ExternalLink } from 'lucide-react'
+import { LayoutGrid, Globe, Terminal, Sparkles, ArrowUpRight, ArrowLeft, Github, ExternalLink, Clock, Link as LinkIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { projects } from '../data/content'
 
@@ -7,6 +7,8 @@ const ICON_MAP = {
   globe: Globe,
   terminal: Terminal,
   sparkles: Sparkles,
+  clock: Clock,
+  link: LinkIcon,
 }
 
 export default function Projects() {

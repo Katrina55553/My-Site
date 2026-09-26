@@ -8,14 +8,23 @@ import Footer from './components/Footer'
 import useScrollReveal from './hooks/useScrollReveal'
 
 // chunk 加载失败时自动刷新（部署后旧 chunk 文件名失效）
+// 用 sessionStorage 记重试标记：HashRouter 下重试参数只能写在 hash 里，
+// 之前用 location.search 检测永远为 false，会造成无限刷新循环
+const CHUNK_RETRY_KEY = 'chunk-retry'
 function lazyWithRetry(fn) {
   return lazy(() =>
-    fn().catch((err) => {
-      if (err.message.includes('Failed to fetch dynamically imported module') && !location.search.includes('retry')) {
-        location.replace(location.pathname + location.hash + '?retry=1')
-      }
-      throw err
-    })
+    fn()
+      .then((mod) => {
+        sessionStorage.removeItem(CHUNK_RETRY_KEY)
+        return mod
+      })
+      .catch((err) => {
+        if (err.message.includes('Failed to fetch dynamically imported module') && !sessionStorage.getItem(CHUNK_RETRY_KEY)) {
+          sessionStorage.setItem(CHUNK_RETRY_KEY, '1')
+          location.reload()
+        }
+        throw err
+      })
   )
 }
 
@@ -140,7 +149,6 @@ export default function App() {
       setActiveSection('')
       return
     }
-    const sections = document.querySelectorAll('section[id]')
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -149,8 +157,24 @@ export default function App() {
       },
       { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
     )
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
+    // Hub/Lab/Terminal 是懒加载组件，effect 首次运行时 section 还没挂载，
+    // 必须用 MutationObserver 等它们出现后再 observe，否则 scroll-spy 对懒加载区块失效
+    const observed = new WeakSet()
+    const observeAll = () => {
+      document.querySelectorAll('section[id]').forEach((section) => {
+        if (!observed.has(section)) {
+          observed.add(section)
+          observer.observe(section)
+        }
+      })
+    }
+    observeAll()
+    const mo = new MutationObserver(observeAll)
+    mo.observe(document.body, { childList: true, subtree: true })
+    return () => {
+      observer.disconnect()
+      mo.disconnect()
+    }
   }, [location.pathname])
 
   // 路由切换时滚动到顶部
