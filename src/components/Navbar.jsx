@@ -98,11 +98,11 @@ function Navbar({ activeSection }) {
       </nav>
       <div className="nav-actions">
         <a
-          href="https://github.com/Katrina55553/My-Site"
+          href="https://github.com/Katrina55553"
           target="_blank"
           rel="noopener noreferrer"
           className="github-btn"
-          aria-label="GitHub Repository"
+          aria-label="GitHub Profile"
         >
           <Github size={20} />
         </a>
